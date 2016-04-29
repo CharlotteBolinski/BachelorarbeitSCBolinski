@@ -1,0 +1,64 @@
+%Protokoll zur Entwicklung eines Frameworks zur Erstellung von Dummy-Daten: Rotation eines Starrkörpers in 3D
+
+%erstellen einer Ebene
+%meshgrid erzeugt Koordinatennetz für die Ebene
+%hier: z-Komponente ist Null, x und y Werte als Punkte durch meshgrid erzeugt vorhanden
+%Datenpunke können auch manuell durch Matrix angelegt werden
+
+[x,y] = meshgrid(1:2);
+z = zeros(2,2);
+
+%Plot der Ebene, Bezeichner ist der handle der Ebene zum verändern der Daten
+ebene = surf(x,y,z); 
+alpha(.2); %sofortiges setzen von alpha
+
+%Random Datenwerte erzeugen, die im Bereich der Ebene liegen
+%floating number: (grenzeOben - grenzeUnten).*rand(anzahlRandom, 1) + unten
+%hier: formel für x und y anwenden, z komponente ist Null 
+
+xRandom = rand(20,1)+1;
+yRandom = rand(20,1)+1;
+zRandom = zeros(20,1);
+
+%Plot der Random Werte
+points = scatter3(xRandom, yRandom, zRandom);
+
+%---
+
+%um Daten im Plot die ganze Zeit zu updaten: linkdata on eingeben.
+%Gegenstück: linkdata off
+
+%---
+
+%Rotation von Datenpunkten um z-Achse nach Matrixmultiplikation mit Rotationsmatrix...im Urzeigersinn
+rotAngle = deg2rad(alpha);
+xRot     = x*cos(rotAngle) - y*sin(rotAngle);
+yRot     = x*sin(rotAngle) + y*cos(rotAngle);
+plot(yRot,xRot,'b*');
+
+%---
+%Funktion eine Ebene mit Random Datenpunkten zu plotten
+%function [ x,y,z,xRandom,yRandom,zRandom,ebene_handle,punkte_handle] = ebene3D_scatter( von,bis,zeroKomponente,anzahlRandom)
+%Beispiel Input:
+
+[x y z xRandom yRandom zRandom ebene_handle punkte_handle] = ebene3D_scatter(2,4,'z',20)
+
+%Random werte nach Rotation überschreiben?
+%function [ xRot,yRot,zRot ] = rotateData3D( x,y,z,winkel,achse)
+[xRandom yRandom zRandom] = rotateData3D(xRandom, yRandom, zRandom, 30, 'z');
+
+
+%-----------------------------------------------------------------------
+
+%Werte in CSV-Datei schreiben... soll später für jeden 'Frame' erfolgen.
+
+csvwrite('filename.csv', [x,y,z]);
+
+%Daten an die existierde Datei anhängen
+
+dlmwrite('filename.csv',[x,y,z], '-append');
+
+%CSV-Daten auslesen: nur für Zahlenwerte!! Ansonsten als Table einlesen und Datensätze einzeln in VEKTOREN EXPORTIEREN 
+
+csvread('filename.csv');
+
