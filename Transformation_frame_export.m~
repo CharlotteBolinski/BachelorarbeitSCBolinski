@@ -50,7 +50,7 @@ end
 
     %Ebene kann extra geplottet werden, da nur zur Visualisierung
     %rotateEbene3D_matrix_RotationTranslation(xEbene,yEbene,zEbene,bis_winkel_rotation,achse,bis_punkt_translation);
-    rotateEbene3D_matrix_RotationTranslation(xEbene,yEbene,zEbene,bis_winkel_rotation,achse);
+rotateEbene3D_matrix_RotationTranslation(xEbene,yEbene,zEbene,bis_winkel_rotation,achse,bis_punkt_translation);
     
 %Projektion-Daten erzeugen-------------------------------------
 %in CSV schreiben

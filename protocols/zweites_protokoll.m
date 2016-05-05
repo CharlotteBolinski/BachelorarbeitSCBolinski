@@ -23,3 +23,22 @@ Transformation_frame_export(Random_werte, x, y, z, 30, [0 0 1], [1 1 1], [4 4 4]
 %Werteberechnung mit ausgelagerten Funktionen
 [ x y z Random_werte ebene_handle punkte_handle] = ebene3D_scatter( 2,4,'z',20);
 Transformation_frame_export(Random_werte, x, y, z, 30, [0 0 1],[2 2 2])
+
+%Probe:
+[ x y z Random_werte ebene_handle punkte_handle] = ebene3D_scatter( 2,4,'z',20);
+rotateEbene3D_matrix_RotationTranslation( x,y,z,30,[0 0 1],[2 2 2])
+hold on
+rotateData3D_matrix_RotationTranslation(Random_werte,30,[0 0 1],[2 2 2])
+%-->Probe liefert richtiges Ergebnis!
+
+%--------
+%Einzelberechnung der Matrizen
+
+%Versuch nur Rotation..stimmt dann das Ergebnis?
+[ x y z Random_werte ebene_handle punkte_handle] = ebene3D_scatter( 2,4,'z',20);
+rotateEbene3D_matrix_RotationTranslation( x,y,z,30,[0 0 1])
+hold on
+rotateData3D_matrix_RotationTranslation(Random_werte,30,[0 0 1])
+%Ja stimmt!!
+
+%Wie Rotation und Translation zusammen ausfühern...was zuerst?

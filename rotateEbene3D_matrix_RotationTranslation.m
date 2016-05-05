@@ -12,10 +12,12 @@ function [ xRot,yRot,zRot ] = rotateEbene3D_matrix_RotationTranslation( xEbene,y
     
     %Transformationsmatrix
     %Vielleicht besser übergeben?
-    transformation_matrix = transformation_matrix_calc(rotation_winkel,rotation_achse,translation);
+    %transformation_matrix = transformation_matrix_calc(rotation_winkel,rotation_achse,translation);
+    rotation_matrix = rotation_matrix_calc(rotation_winkel,rotation_achse);
     
     %Ebene rotieren
-    Ebene = transformation_matrix * ebene_werte;
+    %Ebene = transformation_matrix * ebene_werte;
+    Ebene = rotation_matrix * ebene_werte;
     
     %Ebene wieder in einzelne Matrizen überführen für surface Plot
     xRot = [Ebene(1,1) Ebene(1,2) ; Ebene(1,3) Ebene(1,4)];
@@ -27,7 +29,7 @@ function [ xRot,yRot,zRot ] = rotateEbene3D_matrix_RotationTranslation( xEbene,y
     alpha(.2);
     hold off
     
-        xlabel('x');
+    xlabel('x');
     ylabel('y');
     zlabel('z');
     

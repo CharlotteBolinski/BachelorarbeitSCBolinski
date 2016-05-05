@@ -1,0 +1,23 @@
+function [  ] = rotateDate3D_Projektion( daten_csv, fx, fy, principal_point)
+%Berechnen der 2D-Projektion der 3D-Daten
+
+    input_daten = csvread(daten_csv);
+    x = input_daten(:,1);
+    y = input_daten(:,2);
+    z = input_daten(:,3);
+
+    X0 = pincipal_point(1);
+    Y0 = pincipal_point(2);
+    
+    %Projection_matrix = [-fx 0 X0; 0 -fy Y0; 0 0 1];
+    X = X0-fx*x/z;
+    Y = Y0-fy*y/z;
+    
+    hold on
+    %neue figure/sub-figure
+    %scatter(X,Y)
+    %Ebene Plot
+    %surf(...)
+    
+end
+

@@ -9,10 +9,12 @@ function [ Rotation_werte_out] = rotateData3D_matrix_RotationTranslation(random_
 
     %Transformationsmatrix
     %Vielleicht besser übergeben?
-    transformation_matrix = transformation_matrix_calc(rotation_winkel,rotation_achse,translation);
+    %transformation_matrix = transformation_matrix_calc(rotation_winkel,rotation_achse,translation);
+    rotation_matrix = rotation_matrix_calc(rotation_winkel,rotation_achse);
     
     %Messpunkte rotieren
-    Rotation_werte_homo = transformation_matrix * random_werte_homo;
+    %Rotation_werte_homo = transformation_matrix * random_werte_homo;
+    Rotation_werte_homo = rotation_matrix * random_werte_homo;
     
     Rotation_werte = Rotation_werte_homo/Rotation_werte_homo(4);
     Rotation_werte_out = [Rotation_werte(1,:)', Rotation_werte(2,:)', Rotation_werte(3,:)'];
