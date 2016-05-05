@@ -18,3 +18,8 @@ Transformation_frame_export(Random_werte, x, y, z, 30, [0 0 1], [1 1 1], [4 4 4]
 [ x y z Random_werte ebene_handle punkte_handle] = ebene3D_scatter( 2,4,'z',20);
 [ Rotation_werte xRot yRot zRot] = rotateData3D_matrix_RotationTranslationZentrum(Random_werte,x,y,z,30,[0 0 1],[1 1 1],[2 2 2]);
 [ Rotation_werte xRot yRot zRot] = rotateData3D_matrix_RotationTranslationZentrum(Rotation_werte,xRot,yRot,zRot,30,[0 0 1],[1 1 1],[2 2 2]);
+
+%-------
+%Werteberechnung mit ausgelagerten Funktionen
+[ x y z Random_werte ebene_handle punkte_handle] = ebene3D_scatter( 2,4,'z',20);
+Transformation_frame_export(Random_werte, x, y, z, 30, [0 0 1],[2 2 2])
