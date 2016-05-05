@@ -1,4 +1,4 @@
-function [ Rotation_werte_out, xRot,yRot,zRot] = rotateData3D_matrix_RotationTranslation(random_werte,xEbene,yEbene,zEbene,rotation_winkel,rotation_achse,translation)
+function [ Rotation_werte, ebene_werte, ebene_handle, punkte_handle] = rotateData3D_matrix_RotationTranslation(random_werte,xEbene,yEbene,zEbene,rotation_winkel,rotation_achse,translation)
 %Rotation in 3D um eine beliebige Achse
 
     linkdata on
@@ -57,18 +57,16 @@ function [ Rotation_werte_out, xRot,yRot,zRot] = rotateData3D_matrix_RotationTra
     
     %ebene_handle und punkte_handle sollen hier überschrieben werden,
     %gleiche Namen vergeben wie beim Aufruf von ebene3D_scatter!
-    %ebene_handle = surf(xRot, yRot, zRot);
-    surf(xRot, yRot, zRot);
+    ebene_handle = surf(xRot, yRot, zRot);
     alpha(.2);
     
     hold on
     
     %Richtige Berechnung?? Umrechnung in Karthesische Koordinaten
     Rotation_werte = Rotation_werte_homo/Rotation_werte_homo(4);
-    Rotation_werte_out = [Rotation_werte(1,:)', Rotation_werte(2,:)', Rotation_werte(3,:)'];
     %wg Transponiert: punkte_handle = scatter3(Rotation_werte(:,1), Rotation_werte(:,2), Rotation_werte(:,3));
-    %punkte_handle = scatter3(Rotation_werte(1,:), Rotation_werte(2,:), Rotation_werte(3,:));
-    scatter3(Rotation_werte(1,:), Rotation_werte(2,:), Rotation_werte(3,:));
+    punkte_handle = scatter3(Rotation_werte(1,:), Rotation_werte(2,:), Rotation_werte(3,:));
+
         
     hold off
     
