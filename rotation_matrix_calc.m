@@ -1,4 +1,4 @@
-function [ rotation_matrix ] = rotation_matrix_calc( rotation_winkel,rotation_achse)
+function [ rotation_matrix ] = rotation_matrix_calc( rotation_winkel,rotation_achse,punkt_zentrum)
 %Matrix für Starrkörpertransformation berechnen um diese Matrix flexibler
 %Einsetzbar zu machen
 

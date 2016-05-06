@@ -1,4 +1,4 @@
-function [ x,y,z,Random_werte,ebene_handle,punkte_handle] = ebene3D_scatter( von,bis,zeroKomponente,anzahlRandom)
+function [ x,y,z,Random_werte] = ebene3D_scatter( von,bis,zeroKomponente,anzahlRandom)
 %Funktion um Koordinaten einer Ebene im 3dimensionalen Raum festzulegen
 %von: Anfangspunkt der Ebene
 %bis: Endpunkt der Ebene
@@ -7,7 +7,7 @@ function [ x,y,z,Random_werte,ebene_handle,punkte_handle] = ebene3D_scatter( von
     if von < bis %bei negativ?
 
         if zeroKomponente == 'x'
-            x = zeros(4,1);
+            x = zeros(2,2);
             y = [von bis ; von bis];
             z = [von von ; bis bis];
             %Ebene_werte = [zeros(4,1); von bis von bis; von von bis bis];
@@ -44,12 +44,12 @@ function [ x,y,z,Random_werte,ebene_handle,punkte_handle] = ebene3D_scatter( von
         
     end
     
-    ebene_handle = surf(x,y,z);
+    surf(x,y,z);
     alpha(.2);
     
     hold on
     
-    punkte_handle = scatter3(xRandom, yRandom, zRandom);
+    scatter3(xRandom, yRandom, zRandom);
     
     hold off %beim zeichnen von mehreren Ebenen ein Problem
     
@@ -57,5 +57,9 @@ function [ x,y,z,Random_werte,ebene_handle,punkte_handle] = ebene3D_scatter( von
     ylabel('y');
     zlabel('z');
 
+    %lim übergeben?
+    %xlim([0 10])
+    %ylim([0 10])
+    %zlim([0 10])
 end
 

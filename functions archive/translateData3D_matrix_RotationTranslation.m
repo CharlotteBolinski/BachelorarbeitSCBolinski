@@ -1,4 +1,4 @@
-function [ Rotation_werte_out] = rotateData3D_matrix_RotationTranslation(random_werte,rotation_winkel,rotation_achse,translation)
+function [ Translation_werte_out] = translateData3D_matrix_RotationTranslation(random_werte,translation_point)
 %Rotation in 3D um eine beliebige Achse
 
     linkdata on
@@ -10,17 +10,17 @@ function [ Rotation_werte_out] = rotateData3D_matrix_RotationTranslation(random_
     %Transformationsmatrix
     %Vielleicht besser übergeben?
     %transformation_matrix = transformation_matrix_calc(rotation_winkel,rotation_achse,translation);
-    rotation_matrix = rotation_matrix_calc(rotation_winkel,rotation_achse);
+    translation_matrix = translation_matrix_calc(translation_point);
     
     %Messpunkte rotieren
     %Rotation_werte_homo = transformation_matrix * random_werte_homo;
-    Rotation_werte_homo = rotation_matrix * random_werte_homo;
+    Translation_werte_homo = translation_matrix * random_werte_homo;
     
-    Rotation_werte = Rotation_werte_homo/Rotation_werte_homo(4);
-    Rotation_werte_out = [Rotation_werte(1,:)', Rotation_werte(2,:)', Rotation_werte(3,:)'];
+    Translation_werte = Translation_werte_homo/Translation_werte_homo(4);
+    Translation_werte_out = [Translation_werte(1,:)', Translation_werte(2,:)', Translation_werte(3,:)'];
     
     %hold on
-    scatter3(Rotation_werte(1,:), Rotation_werte(2,:), Rotation_werte(3,:));   
+    scatter3(Translation_werte(1,:), Translation_werte(2,:), Translation_werte(3,:));   
     %hold off
     
     xlabel('x');

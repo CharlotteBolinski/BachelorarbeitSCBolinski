@@ -21,11 +21,11 @@ Transformation_frame_export(Random_werte, x, y, z, 30, [0 0 1], [1 1 1], [4 4 4]
 
 %-------
 %Werteberechnung mit ausgelagerten Funktionen
-[ x y z Random_werte ebene_handle punkte_handle] = ebene3D_scatter( 2,4,'z',20);
-Transformation_frame_export(Random_werte, x, y, z, 30, [0 0 1],[2 2 2])
+[ x y z Random_werte] = ebene3D_scatter( 2,4,'z',20);
+Transformation_frame_export_save(Random_werte, x, y, z, 30, [0 0 1],[2 2 2])
 
 %Probe:
-[ x y z Random_werte ebene_handle punkte_handle] = ebene3D_scatter( 2,4,'z',20);
+[ x y z Random_werte] = ebene3D_scatter( 2,4,'z',20);
 rotateEbene3D_matrix_RotationTranslation( x,y,z,30,[0 0 1],[2 2 2])
 hold on
 rotateData3D_matrix_RotationTranslation(Random_werte,30,[0 0 1],[2 2 2])
@@ -35,10 +35,35 @@ rotateData3D_matrix_RotationTranslation(Random_werte,30,[0 0 1],[2 2 2])
 %Einzelberechnung der Matrizen
 
 %Versuch nur Rotation..stimmt dann das Ergebnis?
-[ x y z Random_werte ebene_handle punkte_handle] = ebene3D_scatter( 2,4,'z',20);
+[ x y z Random_werte] = ebene3D_scatter( 2,4,'z',20);
 rotateEbene3D_matrix_RotationTranslation( x,y,z,30,[0 0 1])
 hold on
 rotateData3D_matrix_RotationTranslation(Random_werte,30,[0 0 1])
 %Ja stimmt!!
 
 %Wie Rotation und Translation zusammen ausfühern...was zuerst?
+%Eigene Funktionen für Rotation und Translation schreiben, dann können
+%diese nach belieben aufgerufen werden!!
+%gültige Strings: rotate,translate,transform
+%transformData3D_matrix_RotationTranslation(random_werte,rotation_winkel,rotation_achse,translation_punkt, artString)
+[ x y z Random_werte] = ebene3D_scatter( 2,4,'z',20);
+transformData3D(Random_werte,30,[0 0 1],[2 2 2], 'rotate')
+transformData3D(Random_werte,30,[0 0 1],[2 2 2], 'translate')
+hold on
+transformEbene3D( xEbene,yEbene,zEbene,30,[0 0 1],[2 2 2], 'rotate')
+transformEbene3D( xEbene,yEbene,zEbene,30,[0 0 1],[2 2 2], 'translate')
+
+%Nuten der Funktionen in Transformation_frame_export
+[ x y z Random_werte] = ebene3D_scatter( 2,4,'z',20);
+[Random_werte xEbene yEbene zEbene] = Transformation_frame_export( Random_werte, x, y, z, 30, [0 0 1], [2 2 2], 'rotate', '1Sekunde.csv')
+
+%geht noch nicht :(
+[Random_werte xEbene yEbene zEbene] = Transformation_frame_export( Random_werte, xEbene, yEbene, zEbene, 30, [0 0 1], [2 2 2], 'transform', '1Sekunde.csv')
+
+%Projektion
+%[ X,Y ] = rotateDate3D_Projektion( CSV_name,daten_csv, fx, fy, principal_point)
+[ X,Y ] = Data3D_Projektion( '1Sekunde_projektion.csv','1Sekunde.csv',1, 1, [1;1])
+
+%Test
+[ X,Y ] = Data3D_Projektion( '1Sekunde_projektion.csv','1Sekunde.csv', Random_werte,1, 1, [1;1])
+

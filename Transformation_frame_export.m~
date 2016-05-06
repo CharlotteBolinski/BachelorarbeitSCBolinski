@@ -1,4 +1,4 @@
-function [  ] = Transformation_frame_export( input_werte_matrix, xEbene, yEbene, zEbene, bis_winkel_rotation, achse, bis_punkt_translation)
+function [ Transform_save ] = Transformation_frame_export( input_werte_matrix, xEbene, yEbene, zEbene, winkel, rotation_achse, translation_punkt, CSV_name, artString)
 %CSV Datei erzeugen, für die die Transformation von einem Anfangspunkt zu
 %einem Endpunkt durchgeführt wird.
 %25 Frames pro Sekunde werden angenommen.
@@ -10,48 +10,87 @@ function [  ] = Transformation_frame_export( input_werte_matrix, xEbene, yEbene,
 frames = 25;
 sekunden = 1;
 
+%kann nach Testphase auch übergeben werden
+%axis([0 5 0 5 0 5]);
+
 %CSV-Namen festlegen
 CSV_name = '1Sekunde.csv';
 
 %-----------------------------------------------------------------------
 %alles Änderung pro Frame umrechnen
-winkel_frame = deg2rad(bis_winkel_rotation/(sekunden*frames));
-translation_frame = bis_punkt_translation/(sekunden*frames);
+winkel_frame = winkel/(sekunden*frames);
+translation_frame = translation_punkt/(sekunden*frames);
 
-rot_frame = input_werte_matrix;
-
-
-%OPTIONEN
-%gleichzeitig Rotieren + Translatieren?
-%nur Rotation oder nur Translation? 
-%--> Translationsvektor/Rotationsvektor==0??
-%--> In eigene Funktionen schreiben??
-%--> Matrizen bei Multiplikation tauschen ergibt erst/später Rotation/Translation
-
+transform_frame = input_werte_matrix;
 
 %3D-Daten erzeugen-------------------------------------------
 %in CSV schreiben
 for s = 1:sekunden
     
     for f = 1:frames
-  
-        %NUR ROTATION
-        %[rot_frame, xEbene_neu, yEbene_neu, zEbene_neu] = rotateData3D_matrix_RotationTranslationZentrum(rot_frame, winkel_frame, achse, rotation_zentrum,translation_frame);
-        %rot_frame = rotateData3D_matrix_RotationTranslation(rot_frame,winkel_frame,achse,translation_frame);
-        rot_frame = rotateData3D_matrix_RotationTranslation(rot_frame,winkel_frame,achse);
 
+        if strcmp(artString,'rotate')
+
+            axis([-5 5 -5 5 0 5]);
+            transform_frame = transformData3D(transform_frame,winkel_frame,rotation_achse,translation_frame,'rotate');
+
+        elseif strcmp(artString,'translate')
+
+            axis([-5 5 -5 5 0 5]);
+            transform_frame = transformData3D(transform_frame,winkel_frame,rotation_achse,translation_frame,'translate');
+
+        elseif strcmp(artString,'transform')
+
+            axis([-5 5 -5 5 0 5]);
+            transform_frame = transformData3D(transform_frame,winkel_frame,rotation_achse,translation_frame,'transform');
+
+        else
+            disp('Ungültige Eingabe!');
+            disp('Relevante Strings: rotate, translate und transform');
+        end
+    
+        %surf(xEbene,yEbene,zEbene);
+        %alpha(.2);
+        
+        %scatter3(transform_frame(1,:), transform_frame(2,:), transform_frame(3,:));
+        
+        %xlabel('x');
+        %ylabel('y');
+        %zlabel('z');
+        
         %schreibe in csv
-        dlmwrite(CSV_name, rot_frame, '-append');
+        dlmwrite(CSV_name, transform_frame, '-append');
         
     end
 
 
 end
 
-    %Ebene kann extra geplottet werden, da nur zur Visualisierung
-    %rotateEbene3D_matrix_RotationTranslation(xEbene,yEbene,zEbene,bis_winkel_rotation,achse,bis_punkt_translation);
-rotateEbene3D_matrix_RotationTranslation(xEbene,yEbene,zEbene,bis_winkel_rotation,achse,bis_punkt_translation);
+%Speichern des letzen Ergebnisses für weitere Transformationen
+Transform_save = transform_frame;
+
+%Ebenentransformation bekommt direkt die Endpunkte
+if strcmp(artString,'rotate')
+
+    axis([-5 5 -5 5 0 5]);
+    transformEbene3D( xEbene,yEbene,zEbene,winkel,rotation_achse,translation_punkt,'rotate');
+
+elseif strcmp(artString,'translate')
+
+    axis([-5 5 -5 5 0 5]);
+    transformEbene3D( xEbene,yEbene,zEbene,winkel,rotation_achse,translation_punkt,'translate');
+
+elseif strcmp(artString,'transform')
+
+    axis([-5 5 -5 5 0 5]);
+    transformEbene3D( xEbene,yEbene,zEbene,winkel,rotation_achse,translation_punkt,'transform');
+
+else
+    disp('Ungültige Eingabe für Ebene!');
+    disp('Relevante Strings: rotate, translate und transform');
+end
     
 %Projektion-Daten erzeugen-------------------------------------
 %in CSV schreiben
+
 end

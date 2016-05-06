@@ -18,39 +18,40 @@ CSV_name = '1Sekunde.csv';
 winkel_frame = deg2rad(bis_winkel_rotation/(sekunden*frames));
 translation_frame = bis_punkt_translation/(sekunden*frames);
 
-%rotateData3D_matrix_RotationTranslation
-%(random_werte,xEbene,yEbene,zEbene,rotation_winkel,rotation_achse,translation)
-
 rot_frame = input_werte_matrix;
 
-%Ebene in einzelne Matrix überführen, homogene Koordinaten
-%eb_frame = zeros(4,4);
 
+%OPTIONEN
+%gleichzeitig Rotieren + Translatieren?
+%nur Rotation oder nur Translation? 
+%--> Translationsvektor/Rotationsvektor==0??
+%--> In eigene Funktionen schreiben??
+%--> Matrizen bei Multiplikation tauschen ergibt erst/später Rotation/Translation
+
+
+%3D-Daten erzeugen-------------------------------------------
+%in CSV schreiben
 for s = 1:sekunden
     
     for f = 1:frames
   
-        %3D-Daten erzeugen-------------------------------------------
-        %in CSV schreiben
-
-        %Funktionsaufruf
-        %translation_frame wird einfach so oft angerufen wie die for loop.
-        %Damit wird zum Schluss die ganze Transformation ausgeführt sein.
-        
+        %NUR ROTATION
         %[rot_frame, xEbene_neu, yEbene_neu, zEbene_neu] = rotateData3D_matrix_RotationTranslationZentrum(rot_frame, winkel_frame, achse, rotation_zentrum,translation_frame);
-        rot_frame = rotateData3D_matrix_RotationTranslation(rot_frame,winkel_frame,achse,translation_frame);
-        
+        %rot_frame = rotateData3D_matrix_RotationTranslation(rot_frame,winkel_frame,achse,translation_frame);
+        rot_frame = rotateData3D_matrix_RotationTranslation(rot_frame,winkel_frame,achse);
+
         %schreibe in csv
         dlmwrite(CSV_name, rot_frame, '-append');
         
-        %Projektion-Daten erzeugen-------------------------------------
-        %in CSV schreiben
-        
     end
+
 
 end
 
     %Ebene kann extra geplottet werden, da nur zur Visualisierung
-    rotateEbene3D_matrix_rotationTranslation(xEbene,yEbene,zEbene,rotation_winkel,rotation_achse,translation);
-
+    %rotateEbene3D_matrix_RotationTranslation(xEbene,yEbene,zEbene,bis_winkel_rotation,achse,bis_punkt_translation);
+    rotateEbene3D_matrix_RotationTranslation(xEbene,yEbene,zEbene,bis_winkel_rotation,achse);
+    
+%Projektion-Daten erzeugen-------------------------------------
+%in CSV schreiben
 end
