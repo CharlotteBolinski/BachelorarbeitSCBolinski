@@ -1,0 +1,26 @@
+%Reduzierten auf eine Transformationsmatrix
+
+%mit String-Übergabe
+[ x y z Random_werte] = ebene3D_scatter( 2,4,'z',20);
+
+%Test
+%transformData3D(Random_werte,30,[0 0 1],[2 2 2],'transform')
+%transformEbene3D( x,y,z,30,[0 0 1],[2 2 2], 'transform')
+%transformation_matrix_calc(30,[0 0 1],[2 2 2])
+
+%Linearinterpolation
+%Ebenentransformation: Rundungsfehler!
+Transformation_frame_export(Random_werte, x, y, z, 30, [0 0 1],[2 2 2], 'transform', '1Sekunde.csv')
+
+%Test
+
+%geht - sogar kein Rundungsfehler.. nur beim Winkel?
+Transformation_frame_export(Random_werte, x, y, z, 0, [0 0 1],[2 2 2], 'transform', '1Sekunde.csv')
+
+%geht - sogar kein Rundungsfehler.. nur beim Winkel?
+Transformation_frame_export(Random_werte, x, y, z, 30, [0 0 1],[0 0 0], 'transform', '1Sekunde.csv')
+
+Transformation_frame_export(Random_werte, x, y, z, 0, [0 0 0],[2 2 2], 'transform', '1Sekunde.csv')
+
+%ohne String
+[ transformation_matrix ] = transformation_matrix( rotation_winkel,rotation_achse,translation );

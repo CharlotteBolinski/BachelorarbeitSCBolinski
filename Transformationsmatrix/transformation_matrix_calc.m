@@ -24,12 +24,12 @@ function [ transformation_matrix ] = transformation_matrix_calc( rotation_winkel
     rot_3_2 = n(2).*n(3).*(1-cos(theta))+n(1).*sin(theta);
     rot_3_3 = n(3).*n(3)+(1-n(3).*n(3)).*cos(theta);
 
-    rotation_matrix = [rot_1_1 rot_1_2 rot_1_3 0; rot_2_1 rot_2_2 rot_2_3 0; rot_3_1 rot_3_2 rot_3_3 0];
+    rotation_matrix = [rot_1_1 rot_1_2 rot_1_3 0; rot_2_1 rot_2_2 rot_2_3 0; rot_3_1 rot_3_2 rot_3_3 0; 0 0 0 1];
     
-    %Translationsmatrix
-    translation_matrix = [translation(1), translation(2), translation(3), 1];
+    %translationsmatrix
+    translation_matrix = [1 0 0 translation(1); 0 1 0 translation(2); 0 0 1 translation(3); 0 0 0 1];
 
-    transformation_matrix = [rotation_matrix; translation_matrix];
+    transformation_matrix = rotation_matrix*translation_matrix;
     
 end
 

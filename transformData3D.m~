@@ -6,10 +6,6 @@ function [ Transformation_werte_out] = transformData3D(random_werte,rotation_win
     %Rotation in homogene Koordinaten überführen
     random_size = size(random_werte);
     random_werte_homo = [random_werte, ones(random_size(1),1)]';
-
-    %Transformationsmatrix
-    %Vielleicht besser übergeben?
-    %transformation_matrix = transformation_matrix_calc(rotation_winkel,rotation_achse,translation);
     
     %Entscheidung der Transformation durch String-Übergabe
     %strcmp is 0 or 1, string compare function
@@ -23,7 +19,8 @@ function [ Transformation_werte_out] = transformData3D(random_werte,rotation_win
         
     elseif strcmp(artString,'transform')
         
-        transformation_matrix = transformation_matrix_calc(rotation_winkel,rotation_achse,translation_punkt);
+        %transformation_matrix = transformation_matrix_calc(rotation_winkel,rotation_achse,translation_punkt);
+        transformation_matrix = transformation_matrix(rotation_winkel,rotation_achse,translation_punkt);
         
     else
         disp('Ungültige Eingabe!');
@@ -31,22 +28,21 @@ function [ Transformation_werte_out] = transformData3D(random_werte,rotation_win
     end
     
     %Messpunkte rotieren
-    if strcmp(artString,'rotate')
-        Transformation_werte_homo = transformation_matrix * (random_werte_homo-punkt_zentrum(1)) + ;
-    else
-        Transformation_werte_homo = transformation_matrix * random_werte_homo;
-    end
+    Transformation_werte_homo = random_werte_homo * transformation_matrix;
     
     Transformation_werte = Transformation_werte_homo/Transformation_werte_homo(4);
     Transformation_werte_out = [Transformation_werte(1,:)', Transformation_werte(2,:)', Transformation_werte(3,:)'];
-    
-    %hold on --> wenn alle Datenveränderungen geplottet werden sollen
+
     scatter3(Transformation_werte(1,:), Transformation_werte(2,:), Transformation_werte(3,:));   
-    %hold off
     
     xlabel('x');
     ylabel('y');
     zlabel('z');
+    
+    %lim übergeben?
+    xlim([0 10])
+    ylim([0 10])
+    zlim([0 10])
     
     linkdata off
 end
