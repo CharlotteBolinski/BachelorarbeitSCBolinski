@@ -1,4 +1,4 @@
-function [ xRot,yRot,zRot ] = transformEbene3D( xEbene,yEbene,zEbene,transformation_matrix)
+function [ xRot,yRot,zRot ] = transformEbene3D( xEbene,yEbene,zEbene,transformation_matrix,color_array)
 %Rotation der Ebenenrepräsentation in 3D seperat 
 
     linkdata on
@@ -8,7 +8,7 @@ function [ xRot,yRot,zRot ] = transformEbene3D( xEbene,yEbene,zEbene,transformat
     ebene_y = [yEbene(1,:) , yEbene(2,:)];
     ebene_z = [zEbene(1,:) , zEbene(2,:)];
     ebene_1 = ones(1,4);
-    ebene_werte = [ebene_x; ebene_y; ebene_z; ebene_1]'
+    ebene_werte = [ebene_x; ebene_y; ebene_z; ebene_1]';
     
     %Transformationsmatrix berechnen
     %transformation_matrix = transformation_matrix_calc(rotation_winkel,rotation_achse,translation_punkt);
@@ -27,9 +27,10 @@ function [ xRot,yRot,zRot ] = transformEbene3D( xEbene,yEbene,zEbene,transformat
     
     %handle hier zuweisen
     hold on
-    surf(xRot, yRot, zRot);
-    alpha(.2);
-    hold off
+    surface = surf(xRot, yRot, zRot);
+    set(surface,'FaceColor',color_array,'FaceAlpha',0.2);
+
+    %hold off
     
     xlabel('x');
     ylabel('y');

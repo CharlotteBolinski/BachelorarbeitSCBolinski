@@ -1,15 +1,15 @@
-function [ x,y,z,Random_werte] = ebene3D_scatter( von,bis,zeroKomponente,anzahlRandom)
+function [ x,y,z,Random_werte] = ebene3D_scatter( von1, bis1, von2, bis2, zeroKomponente, anzahlRandom,color_array)
 %Funktion um Koordinaten einer Ebene im 3dimensionalen Raum festzulegen
 %von: Anfangspunkt der Ebene
 %bis: Endpunkt der Ebene
 %Random Werte, die auf und in der Ebene liegen werden je nach Null-Komponente erzeugt
     
-    if von < bis %bei negativ?
+    %if von < bis %bei negativ?
 
         if zeroKomponente == 'x'
             x = zeros(2,2);
-            y = [von bis ; von bis];
-            z = [von von ; bis bis];
+            y = [von1 bis1 ; von1 bis1];
+            z = [von2 von2 ; bis2 bis2];
             %Ebene_werte = [zeros(4,1); von bis von bis; von von bis bis];
             
             xRandom = zeros(anzahlRandom,1);
@@ -19,9 +19,9 @@ function [ x,y,z,Random_werte] = ebene3D_scatter( von,bis,zeroKomponente,anzahlR
         end
         
         if zeroKomponente == 'y'
-            x = [von bis ; von bis];
+            x = [von1 bis1 ; von1 bis1];
             y = zeros(2,2);
-            z = [von von ; bis bis];
+            z = [von2 von2 ; bis2 bis2];
             %Ebene_werte = [von bis von bis; zeros(4,1); von von bis bis];
             
             xRandom = (bis-von).*rand(anzahlRandom,1) + von;
@@ -31,27 +31,27 @@ function [ x,y,z,Random_werte] = ebene3D_scatter( von,bis,zeroKomponente,anzahlR
         end
         
         if zeroKomponente == 'z'
-            x = [von bis ; von bis];
-            y = [von von ; bis bis];
+            x = [von1 bis1 ; von1 bis1];
+            y = [von2 von2 ; bis2 bis2];
             z = zeros(2,2);
             %Ebene_werte = [von bis von bis; von von bis bis; zeros(4,1)];
             
-            xRandom = (bis-von).*rand(anzahlRandom,1) + von;
-            yRandom = (bis-von).*rand(anzahlRandom,1) + von;
+            xRandom = (bis1-von1).*rand(anzahlRandom,1) + von1;
+            yRandom = (bis2-von2).*rand(anzahlRandom,1) + von2;
             zRandom = zeros(anzahlRandom,1);
             Random_werte = [xRandom, yRandom, zRandom];
         end
         
-    end
+    %end
     
-    surf(x,y,z);
-    alpha(.2);
+    surface = surf(x,y,z);
+    set(surface,'FaceColor',color_array,'FaceAlpha',0.2);
     
     hold on
     
     scatter3(xRandom, yRandom, zRandom);
     
-    hold off %beim zeichnen von mehreren Ebenen ein Problem
+    %hold off %beim zeichnen von mehreren Ebenen ein Problem
     
     xlabel('x');
     ylabel('y');

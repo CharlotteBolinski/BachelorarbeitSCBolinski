@@ -2,7 +2,7 @@ function [ Transformation_werte] = transformData3D(random_werte,transformation_m
 %Rotation in 3D um eine beliebige Achse
 
     linkdata on
-
+    
     %Rotation in homogene Koordinaten überführen
     random_size = size(random_werte);
     random_werte_homo = [random_werte, ones(random_size(1),1)];
@@ -18,7 +18,10 @@ function [ Transformation_werte] = transformData3D(random_werte,transformation_m
     
     %handle hier zuweisen
     Transformation_werte_plot = Transformation_werte';
+    
+    hold on
     scatter3(Transformation_werte_plot(1,:), Transformation_werte_plot(2,:), Transformation_werte_plot(3,:));   
+    %hold off
     
     xlabel('x');
     ylabel('y');

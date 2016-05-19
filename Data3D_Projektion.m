@@ -1,35 +1,39 @@
-function [ X,Y ] = Data3D_Projektion( random_werte,CSV_name,daten_csv, fx, fy, principal_point)
+function [ projektion ] = Data3D_Projektion(CSV_name,daten_csv, fx, fy, principal_point)
 %Berechnen der 2D-Projektion der 3D-Daten
 
-    %input_daten = csvread(daten_csv);
-    input_daten = random_werte;
-    
-    x = input_daten(:,1);
-    y = input_daten(:,2);
-    z = input_daten(:,3);
+    input_daten = csvread(daten_csv);
+    %input_daten = random_werte;
 
     X0 = principal_point(1);
     Y0 = principal_point(2);
     
-    %Projektions_matrix = [-fx 0 X0; 0 -fy Y0; 0 0 1];
-    %projektion = Projektions_matrix * input_daten;
-    X = (X0-fx)*x./z;
-    Y = (Y0-fy)*y./z;
+    %Projektions_matrix = [-fx 0 X0 0; 0 -fy Y0 0; 0 0 1 0];
+    %Projektions_matrix = [fx 0 X0 0; 0 fy Y0 0; 0 0 1 0]
+    Projektions_matrix = [fx 0 X0 ; 0 fy Y0 ; 0 0 1 ] ;
+    
+    %projektion = input_daten * Projektions_matrix
+    projektion = Projektions_matrix * input_daten';
     
     %in CSV schreiben
-    dlmwrite(CSV_name, [X,Y], '-append');
+    dlmwrite(CSV_name, projektion , '-append');
     
     %hold on
     %neue figure/sub-figure
     figure
     
     %Daten Plot
-    %scatter(X,Y)
-    scatter(x,y)
+    scatter(projektion(1,:),projektion(2,:));
     
     %Ebene Plot
     %surf(...)
     %contourf(X,Y,0)
     
+    %Clustering--------------------------------------------------------------
+    %rng(1); % For reproducibility
+    %X = csvread('1Sekunde_projektion.csv');
+    %[label,energy,model] = kmeans/kmeans(projektion,2); %kmeans(daten,cluster_regionen)
+    
+
+
 end
 

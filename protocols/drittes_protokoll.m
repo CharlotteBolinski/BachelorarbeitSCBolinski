@@ -31,4 +31,3 @@ transformation_export(Random_werte, x, y, z, 30, [0 0 1],[0 0 0],'1Sekunde.csv')
 %transformEbene3D( x,y,z,transformation_matrix)
 
 transformation_export(Random_werte, x, y, z, 0, [0 0 1],[2 2 2], '1Sekunde.csv')
-
