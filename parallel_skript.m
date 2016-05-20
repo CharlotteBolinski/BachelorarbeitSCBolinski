@@ -9,8 +9,12 @@
 [Random_werte x y z] = transformation_export(Random_werte, x, y, z,[1 0 0], 0, [0 1 0],[0 5 0], 'parallel.csv')
 [Random_werte2 x2 y2 z2] = transformation_export(Random_werte2, x2, y2, z2,[0 1 0], 0, [0 1 0],[0 -5 0], 'parallel.csv')
 
+%Rauschen hinzufügen
+noise = noise( 50 , 0, 10, 0, 10);
+dlmwrite('parallel.csv', noise , '-append');
+
 %Projektion
-projektion = Data3D_Projektion('parallel_projektion.csv','parallel.csv', 1, 1, [2 2])
+projektion = Data3D_Projektion('parallel_projektion.csv','parallel.csv', 1, 1, [2 2]);
 
 %Clustering
 [label,energy,model] = kmeans(projektion,2); %2 Cluster, später dynamisch

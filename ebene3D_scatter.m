@@ -5,6 +5,9 @@ function [ x,y,z,Random_werte] = ebene3D_scatter( von1, bis1, von2, bis2, zeroKo
 %Random Werte, die auf und in der Ebene liegen werden je nach Null-Komponente erzeugt
     
     %if von < bis %bei negativ?
+    %if von > bis
+        %Vorzeichen umkehren?
+    %end
 
         if zeroKomponente == 'x'
             x = zeros(2,2);
@@ -13,8 +16,8 @@ function [ x,y,z,Random_werte] = ebene3D_scatter( von1, bis1, von2, bis2, zeroKo
             %Ebene_werte = [zeros(4,1); von bis von bis; von von bis bis];
             
             xRandom = zeros(anzahlRandom,1);
-            yRandom = (bis-von).*rand(anzahlRandom,1) + von;
-            zRandom = (bis-von).*rand(anzahlRandom,1) + von;
+            yRandom = (bis1-von1).*rand(anzahlRandom,1) + von1;
+            zRandom = (bis2-von2).*rand(anzahlRandom,1) + von2;
             Random_werte = [xRandom, yRandom, zRandom];
         end
         
@@ -24,9 +27,9 @@ function [ x,y,z,Random_werte] = ebene3D_scatter( von1, bis1, von2, bis2, zeroKo
             z = [von2 von2 ; bis2 bis2];
             %Ebene_werte = [von bis von bis; zeros(4,1); von von bis bis];
             
-            xRandom = (bis-von).*rand(anzahlRandom,1) + von;
+            xRandom = (bis1-von1).*rand(anzahlRandom,1) + von1;
             yRandom = zeros(anzahlRandom,1);
-            zRandom = (bis-von).*rand(anzahlRandom,1) + von;
+            zRandom = (bis2-von2).*rand(anzahlRandom,1) + von2;
             Random_werte = [xRandom, yRandom, zRandom];
         end
         

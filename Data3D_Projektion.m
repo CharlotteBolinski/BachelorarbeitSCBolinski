@@ -17,6 +17,10 @@ function [ projektion ] = Data3D_Projektion(CSV_name,daten_csv, fx, fy, principa
     %in CSV schreiben
     dlmwrite(CSV_name, projektion , '-append');
     
+    %Rauschen hinzufügen
+    %noise = noise_2D( 50 , 0, 10, 0, 10);
+    %dlmwrite(CSV_name, noise , '-append');
+    
     %hold on
     %neue figure/sub-figure
     figure
