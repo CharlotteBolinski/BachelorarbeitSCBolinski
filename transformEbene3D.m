@@ -1,5 +1,6 @@
 function [ xRot,yRot,zRot ] = transformEbene3D( xEbene,yEbene,zEbene,transformation_matrix,color_array)
-%Rotation der Ebenenrepräsentation in 3D seperat 
+%Rotation der Ebenenrepräsentation in 3D seperat
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
     linkdata on
     
@@ -9,9 +10,6 @@ function [ xRot,yRot,zRot ] = transformEbene3D( xEbene,yEbene,zEbene,transformat
     ebene_z = [zEbene(1,:) , zEbene(2,:)];
     ebene_1 = ones(1,4);
     ebene_werte = [ebene_x; ebene_y; ebene_z; ebene_1]';
-    
-    %Transformationsmatrix berechnen
-    %transformation_matrix = transformation_matrix_calc(rotation_winkel,rotation_achse,translation_punkt);
     
     %Ebene rotieren
     Ebene_homo = ebene_werte * transformation_matrix;
@@ -35,11 +33,6 @@ function [ xRot,yRot,zRot ] = transformEbene3D( xEbene,yEbene,zEbene,transformat
     xlabel('x');
     ylabel('y');
     zlabel('z');
-    
-    %lim zum Testen
-    %xlim([0 10])
-    %ylim([0 10])
-    %zlim([0 10])
     
     linkdata off
 

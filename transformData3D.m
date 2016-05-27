@@ -1,14 +1,12 @@
 function [ Transformation_werte] = transformData3D(random_werte,transformation_matrix)
 %Rotation in 3D um eine beliebige Achse
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
     linkdata on
     
     %Rotation in homogene Koordinaten überführen
     random_size = size(random_werte);
     random_werte_homo = [random_werte, ones(random_size(1),1)];
-    
-    %Transformationsmatrix berechnen
-    %transformation_matrix = transformation_matrix_calc(rotation_winkel,rotation_achse,translation_punkt);
     
     %Messpunkte rotieren
     Transformation_werte_homo = random_werte_homo * transformation_matrix;
@@ -26,11 +24,6 @@ function [ Transformation_werte] = transformData3D(random_werte,transformation_m
     xlabel('x');
     ylabel('y');
     zlabel('z');
-    
-    %lim zum Testen
-    %xlim([0 10])
-    %ylim([0 10])
-    %zlim([0 10])
     
     linkdata off
 end

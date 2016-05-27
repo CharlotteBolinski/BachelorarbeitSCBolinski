@@ -4,12 +4,14 @@ function [ Transform_save, x,y,z ] = transformation_export( input_werte_matrix, 
 %25 Frames pro Sekunde werden angenommen.
 %Ausgangswert wird eine Sekunde für die Transformation. Kann später auch im
 %Funktionskopf übergeben werden um eine individuelle Dauer festzulegen.
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
 %---------------------------------------------------------------------------
 %Diese Größen später der Funktion übergeben!!
 %frames und sekunden festlegen
 
 %Testing
+%frames = 25;
 frames = 5;
 
 %frames = 25;

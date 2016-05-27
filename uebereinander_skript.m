@@ -1,3 +1,7 @@
+%diagonal übereinander bewegende Ebenen
+%Plot und Datenerzeugung
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
+
 %Ebenen erzeugen
 [ x y z Random_werte] = ebene3D_scatter( 0,2,0,2,'z',20,[1 0 0]);
 [ x2 y2 z2 Random_werte2] = ebene3D_scatter( 4,6,0,2,'z',20,[0 1 0]);

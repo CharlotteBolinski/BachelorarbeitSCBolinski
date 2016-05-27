@@ -3,6 +3,7 @@ function [ x,y,z,Random_werte] = ebene3D_scatter( von1, bis1, von2, bis2, zeroKo
 %von: Anfangspunkt der Ebene
 %bis: Endpunkt der Ebene
 %Random Werte, die auf und in der Ebene liegen werden je nach Null-Komponente erzeugt
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
     
     %if von < bis %bei negativ?
     %if von > bis
@@ -59,10 +60,6 @@ function [ x,y,z,Random_werte] = ebene3D_scatter( von1, bis1, von2, bis2, zeroKo
     xlabel('x');
     ylabel('y');
     zlabel('z');
-
-    %lim übergeben?
-    %xlim([0 10])
-    %ylim([0 10])
-    %zlim([0 10])
+    
 end
 
