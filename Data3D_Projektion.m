@@ -1,6 +1,6 @@
-function [ projektion ] = Data3D_Projektion(CSV_name,daten_csv, fx, fy, principal_point)
+function [ projektion ] = Data3D_Projektion(daten_csv, fx, fy, principal_point)
 %Berechnen der 2D-Projektion der 3D-Daten
-
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
     input_daten = csvread(daten_csv);
     %input_daten = random_werte;
 
@@ -15,7 +15,7 @@ function [ projektion ] = Data3D_Projektion(CSV_name,daten_csv, fx, fy, principa
     projektion = Projektions_matrix * input_daten';
     
     %in CSV schreiben
-    dlmwrite(CSV_name, projektion , '-append');
+    %dlmwrite(CSV_name, projektion' , '-append');
     
     %Rauschen hinzufügen
     %noise = noise_2D( 50 , 0, 10, 0, 10);
@@ -26,7 +26,7 @@ function [ projektion ] = Data3D_Projektion(CSV_name,daten_csv, fx, fy, principa
     figure
     
     %Daten Plot
-    scatter(projektion(1,:),projektion(2,:));
+    scatter(projektion(:,1),projektion(:,2));
     
     %Ebene Plot
     %surf(...)

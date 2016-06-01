@@ -12,7 +12,7 @@ function [ Transform_save, x,y,z ] = transformation_export( input_werte_matrix, 
 
 %Testing
 %frames = 25;
-frames = 5;
+frames = 4;
 
 %frames = 25;
 sekunden = 1;
