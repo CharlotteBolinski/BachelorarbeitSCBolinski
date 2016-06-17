@@ -5,7 +5,7 @@ function [ daten_rauschen ] = daten_rauschen( input_daten, von, bis )
 %input_daten = csvread(projektion_csv);
 input_size = size(input_daten);
 
-rows = input_size(1)
+rows = input_size(1);
 columns = input_size(2);
 
 %Parameter für random übergeben!!

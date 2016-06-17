@@ -1,3 +1,19 @@
+%Clustering download kmeans-----------------------------------------------
+%{
+[label,energy,model] = kmeans(proj_vektoren',2); %2 Cluster, später dynamisch
+projektion_2D = [proj_vektoren(:,1), proj_vektoren(:,2)];
+
+
+
+[label,energy,model] = kmeans(rauschen',2);
+projektion_2D = [rauschen(:,1), rauschen(:,2)];
+
+
+plotClass(projektion_2D', label);
+xlabel('x');
+ylabel('y');
+%}
+
 function [label, energy, model] = kmeans(X, init)
 % Perform k-means clustering.
 % Input:
