@@ -25,6 +25,7 @@ figure();
 %Projektion
 projektion_A = Data3D_Projektion('parallel_A.csv', 1, 1, [2 2]);
 projektion_B = Data3D_Projektion('parallel_B.csv', 1, 1, [2 2]);
+%proj_gesamt = [projektion_A'; projektion_B'];
 
 %Bewegungsvektoren ausrechnen, Ausgangsdaten für Clustering
 proj_vektoren_A = projektion_vektoren(projektion_A, 20); %20=Anzahl Punkte pro block
@@ -66,6 +67,13 @@ for r = 1:rows
     end
     
 end
+
+%Clusterzentren plotten..for wenn flexibel
+scatter(kmeans_cluster(1,1), kmeans_cluster(1,2), 50,[0 0 0]);
+scatter(kmeans_cluster(1,1), kmeans_cluster(1,2), 50,[0 0 0], '+');
+
+scatter(kmeans_cluster(2,1), kmeans_cluster(2,2), 50,[0 0 0]);
+scatter(kmeans_cluster(2,1), kmeans_cluster(2,2), 50,[0 0 0], '+');
     
 hold off
 

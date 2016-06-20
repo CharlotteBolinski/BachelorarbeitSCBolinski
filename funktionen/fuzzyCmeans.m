@@ -1,9 +1,8 @@
-function [ clustering_daten,cluster_zentrum_neu ] = kmeans_self( input_daten, numCluster )
+function [ clustering_daten,cluster_zentrum_neu ] = fuzzyCmeans( input_daten, numCluster )
 
     %Input Daten Größe
     input_size = size(input_daten); %input = column Vektor
     rows = input_size(1);
-    columns = input_size(2);
     
     %Erste initialisierung Clustering--------------------------------------
     max_data = max(input_daten); %größter Datensatz
@@ -26,12 +25,12 @@ function [ clustering_daten,cluster_zentrum_neu ] = kmeans_self( input_daten, nu
     %diff2_sum = zeros(rows, columns);
     for row = 1:rows
         
+       %sum(A,dim) 
        diff1_sum(row, :) = sum((input_daten(row,:) - cluster_zentrum_neu(1, :)).^2);
        diff2_sum(row, :) = sum((input_daten(row,:) - cluster_zentrum_neu(2, :)).^2);
             
     end
-  
-    %sum(A,dim)
+
     r = 1:rows;
     %distances = [zeros(rows,1), r', sqrt(diff1_sum), sqrt(diff2_sum)]
     distances = [zeros(rows,1), r', diff1_sum, diff2_sum]
