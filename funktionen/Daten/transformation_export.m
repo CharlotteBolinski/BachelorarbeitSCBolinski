@@ -22,7 +22,8 @@ sekunden = 1;
 winkel_frame = winkel/(sekunden*frames);
 translation_frame = translation_punkt/(sekunden*frames);
 
-transformation_matrix_schritt = transformation_matrix_calc(winkel_frame,rotation_achse,translation_frame);
+%transformation_matrix_schritt = transformation_matrix_calc(winkel_frame,rotation_achse,translation_frame);
+transformation_matrix_schritt = rotation_translation_matrix_calc(winkel_frame,rotation_achse,translation_frame);
 
 transform_frame = input_werte_matrix;
 
@@ -38,6 +39,8 @@ for s = 1:sekunden
     for f = 1:frames
 
         transform_frame = transformData3D(transform_frame,transformation_matrix_schritt);
+        %transform_frame = transformData3D(transform_frame,transformation_matrix_schritt, translation_frame);
+        
         [x,y,z] = transformEbene3D( x,y,z,transformation_matrix_schritt,color_array);
 
         %schreibe in CSV

@@ -6,8 +6,8 @@
 path('/Users/Lola/Documents/UNI/HTW/BACHELOR/MATLAB/funktionen',path);
 
 %alte Daten löschen
-delete parallel_A.csv
-delete parallel_B.csv
+delete csv/parallel_A.csv
+delete csv/parallel_B.csv
 figure();
 
 %Ebenen erzeugen
@@ -19,12 +19,12 @@ figure();
 %Linearinterpolation
 %[Random_werte_A x y z] = transformation_export(Random_werte_A, x, y, z,[1 0 0], 0, [0 1 0],[0 0 0], 'parallel_A.csv')
 %[Random_werte_B x2 y2 z2] = transformation_export(Random_werte_B, x2, y2, z2,[0 1 0], 0, [0 1 0],[0 0 0], 'parallel_B.csv')
-[Random_werte_A x y z] = transformation_export(Random_werte_A, x, y, z,[1 0 0], 0, [0 1 0],[0 3 0], 'parallel_A.csv');
-[Random_werte_B x2 y2 z2] = transformation_export(Random_werte_B, x2, y2, z2,[0 1 0], 0, [0 1 0],[0 -3 0], 'parallel_B.csv');
+[Random_werte_A x y z] = transformation_export(Random_werte_A, x, y, z,[1 0 0], 0, [0 1 0],[0 3 0], 'csv/parallel_A.csv');
+[Random_werte_B x2 y2 z2] = transformation_export(Random_werte_B, x2, y2, z2,[0 1 0], 0, [0 1 0],[0 -3 0], 'csv/parallel_B.csv');
 
 %Projektion
-projektion_A = Data3D_Projektion('parallel_A.csv', 1, 1, [2 2]);
-projektion_B = Data3D_Projektion('parallel_B.csv', 1, 1, [2 2]);
+projektion_A = Data3D_Projektion('csv/parallel_A.csv', 1, 1, [2 2]);
+projektion_B = Data3D_Projektion('csv/parallel_B.csv', 1, 1, [2 2]);
 %proj_gesamt = [projektion_A'; projektion_B'];
 
 %Bewegungsvektoren ausrechnen, Ausgangsdaten für Clustering

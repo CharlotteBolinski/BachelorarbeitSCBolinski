@@ -7,6 +7,8 @@
 %alle Daten, sonst kommt eine falsche HGomographieschätzung heraus
 %homographie( projektion_A, frame_index_start, frame_index_ziel)
 
+%homographie( projektion_A', 4, 1, 2)---------------
+
 %test
 %homographie( rauschen_A, 4, 1, 2)
 %homographie( rauschen_B, 4, 1, 2)
@@ -20,6 +22,14 @@ function [ homographie_matrix,  homographie_fehler] = homographie( projektion_ge
 %Berechnung der Homographie von einem Satz Eingangsdaten eines Frames zu
 %den Ausgangsdaten eines anderen Frames
 %Hier wird zunächst von einer Berechnung zwischen 2 Frames ausgegangen
+%
+%INPUT:
+%
+%   projektion_gesamt   =   Werte der Projektion in den 2D Raum, Nx2 Matrix
+%   anzahl_frames       =   Anzahl der Frames pro Sekunde
+%   frame_index_start   =   von welchem Frame aus
+%   frame_index_ziel    =   bis zu welchem Frame
+%
 %Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
 %Punkte pro Frame ermitteln
@@ -65,20 +75,27 @@ homographie_matrix = [homographie_parameter(1:3)'; homographie_parameter(4:6)'; 
 %Fehler pro Punkt speichern, um Wahrscheinlichkeit zu berechnen, dass der
 %Punkt zu dem Cluster gehört oder nicht (je nach Abweichung)
 
-homographie_invers = inv(homographie_matrix)
+homographie_invers = inv(homographie_matrix);
 
 for h = 1:punkte_pro_frame
 
     ziel_pkt = [ziel(h,:), 1]';
     start_pkt = [start(h,:), 1]';
     
-    teil1(h,:) = abs(start_pkt - homographie_invers*ziel_pkt).^2;
+    teil1(h,:) = abs(start_pkt - homographie_invers*ziel_pkt).^2; %richtig?
     teil2(h,:) = abs(ziel_pkt - homographie_matrix*start_pkt).^2;
     fehler = teil1 + teil2;
 end
 
-%Fehler [x y z]
-homographie_fehler = [sum(fehler(:,1))/punkte_pro_frame, sum(fehler(:,2))/punkte_pro_frame, sum(fehler(:,3))/punkte_pro_frame]
+%Hp-q Homographie-Fehler für jeden Punkt!
+disp(fehler);
+for i = 1:punkte_pro_frame
+    homographie_fehler(i) = sum(fehler(i,:)/3);
+end
+%disp(homographie_fehler); %schwankt im Wertebereich? Werte abziehen um Fehler zu bekommen???
+
+%Fehler [x y z] für jede Komponente gesamt
+%homographie_fehler = [sum(fehler(:,1))/punkte_pro_frame, sum(fehler(:,2))/punkte_pro_frame, sum(fehler(:,3))/punkte_pro_frame];
 
 end
 
