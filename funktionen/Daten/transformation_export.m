@@ -1,4 +1,4 @@
-function [ Transform_save, x,y,z ] = transformation_export( input_werte_matrix, xEbene, yEbene, zEbene,color_array, winkel, rotation_achse, translation_punkt, CSV_name)
+function [ Transform_save, x,y,z ] = transformation_export( input_werte_matrix, xEbene, yEbene, zEbene,color_array, winkel, rotation_achse, rotation_punkt, translation_punkt, CSV_name)
 %CSV Datei erzeugen, für die die Transformation von einem Anfangspunkt zu
 %einem Endpunkt durchgeführt wird.
 %25 Frames pro Sekunde werden angenommen.
@@ -23,7 +23,7 @@ winkel_frame = winkel/(sekunden*frames);
 translation_frame = translation_punkt/(sekunden*frames);
 
 %transformation_matrix_schritt = transformation_matrix_calc(winkel_frame,rotation_achse,translation_frame);
-transformation_matrix_schritt = rotation_translation_matrix_calc(winkel_frame,rotation_achse,translation_frame);
+transformation_matrix_schritt = rotation_translation_matrix_calc(winkel_frame,rotation_achse,rotation_punkt, translation_frame);
 
 transform_frame = input_werte_matrix;
 

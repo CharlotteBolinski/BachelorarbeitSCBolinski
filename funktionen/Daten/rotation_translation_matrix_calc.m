@@ -1,8 +1,8 @@
-function [ M ] = rotation_translation_matrix_calc( rotation_winkel,rotation_achse, translation)
+function [ M ] = rotation_translation_matrix_calc( rotation_winkel,rotation_achse, rotation_punkt, translation)
 %Matrix für Starrkörpertransformation berechnen um diese Matrix flexibler
 %Einsetzbar zu machen
 
-    %Rotationswinkel in Rad umrechnen
+        %Rotationswinkel in Rad umrechnen
     theta = deg2rad(rotation_winkel);
 
     %Achsen-Vektor Normierung
@@ -24,14 +24,22 @@ function [ M ] = rotation_translation_matrix_calc( rotation_winkel,rotation_achs
     rot_3_2 = n(2).*n(3).*(1-cos(theta))+n(1).*sin(theta);
     rot_3_3 = (n(3).^2)+(1-n(3).^2).*cos(theta);
 
-    %rotation_matrix = [rot_1_1 rot_1_2 rot_1_3 0; rot_2_1 rot_2_2 rot_2_3 0; rot_3_1 rot_3_2 rot_3_3 0];
-    rotation_matrix = [rot_1_1 rot_1_2 rot_1_3 0; rot_2_1 rot_2_2 rot_2_3 0; rot_3_1 rot_3_2 rot_3_3 0; 0 0 0 1];
-    %rotation_matrix = [cos(theta) -sin(theta) 0 0; sin(theta) cos(theta) 0 0; 0 0 1 0; 0 0 0 1];
+    rotation_matrix = [rot_1_1 rot_1_2 rot_1_3 0; rot_2_1 rot_2_2 rot_2_3 0; rot_3_1 rot_3_2 rot_3_3 0];
     
-    translation_matrix = [1 0 0 translation(1); 0 1 0 translation(2); 0 0 1 translation(3); 0 0 0 1];
+    %Translationsmatrix
+    translation_matrix1 = [-rotation_punkt(1), -rotation_punkt(2), -rotation_punkt(3), 1]
+    translation_matrix2 = [0, 0, 0, 1]
+    %translation_matrix3 = [rotation_punkt(1), rotation_punkt(2), rotation_punkt(3), 1];
     
-    M = inv(translation_matrix) * rotation_matrix * translation_matrix;
+    %keine Rotation
+    keine_rotation = [1 0 0 0; 0 1 0 0; 0 0 1 0]
+
+    t1 = [keine_rotation; translation_matrix1];
+    r  = [rotation_matrix; translation_matrix2];
+    t2 = inv(t1);
     
+    M = t1*r*t2;
+
     
 end
 

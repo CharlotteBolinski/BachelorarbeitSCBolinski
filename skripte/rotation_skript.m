@@ -16,8 +16,8 @@ delete csv/rotation_B.csv
 
 %drehachsen Mittelpunkt
 %drehachse_A = [3 3 0];
-drehachse_A = [2 4 0];
-drehachse_B = [7 7 0];
+rotation_punkt_A = [3 3 0]; %Mittelpunkt, hier manuell berechnet
+rotation_punkt_B = [7 7 0]; %Mittelpunkt, hier manuell berechnet
 
 %drehachse_A_norm = drehachse_A./norm(drehachse_A);
 %norm(drehachse_A_norm)
@@ -25,15 +25,17 @@ drehachse_B = [7 7 0];
 %drehachse_A = drehachse_mittelpunkt( x, y, z );
 %drehachse_B = drehachse_mittelpunkt( x2, y2, z2 );
 hold on
-arrow(drehachse_A, [2 4 1]);
-arrow(drehachse_B, [7 7 1]);
+arrow(rotation_punkt_A, [3 3 1]);
+arrow(rotation_punkt_B, [7 7 1]);
 
 %Linearinterpolation
 %einzeln..egal weil unterschiedliche CSV die wieder bel. konkatiniert werden können
 %schreiben in eine csv
-[Random_werte_A x y z] = transformation_export(Random_werte_A, x, y, z,[1 0 0], 30, drehachse_A ,[0 0 0], 'csv/rotation_A.csv');
-[Random_werte_B x2 y2 z2] = transformation_export(Random_werte_B, x2, y2, z2,[0 1 0], 90, drehachse_B ,[0 0 0], 'csv/rotation_B.csv');
+[Random_werte_A x y z] = transformation_export(Random_werte_A, x, y, z,[1 0 0], 30, [0 0 1] ,rotation_punkt_A,[0 0 0], 'csv/rotation_A.csv');
+[Random_werte_B x2 y2 z2] = transformation_export(Random_werte_B, x2, y2, z2,[0 1 0], 30, [0 0 1],rotation_punkt_B ,[0 0 0], 'csv/rotation_B.csv');
 
+
+%--> MUSS ANDERS BERECHNET WERDEN! WENN NUR 1 FRAME KEINE FUNKTIONALITÄT!
 %Projektion
 projektion_A = Data3D_Projektion('csv/rotation_A.csv', 1, 1, [2 2]);
 projektion_B = Data3D_Projektion('csv/rotation_B.csv', 1, 1, [2 2]);
@@ -66,7 +68,7 @@ size_fuzzy = size(fuzzy_daten);
 rows_f = size_fuzzy(1);
 columns_f = size_fuzzy(2);
 
-figure();
+figure('name', 'Fuzzy C-means');
 for r = 1:rows_f
     
     clust = fuzzy_daten(r,1);
@@ -108,7 +110,7 @@ size_kmeans = size(kmeans_daten);
 rows = size_kmeans(1);
 columns = size_kmeans(2);
 
-figure();
+figure('name', 'K-means');
 for r = 1:rows
     
     clust = kmeans_daten(r,1);
@@ -141,4 +143,4 @@ ylabel('y');
 
 axis equal
 %grid on
-hold off
+hold off 
