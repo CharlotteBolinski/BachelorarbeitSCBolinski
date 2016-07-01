@@ -12,7 +12,7 @@ function [ Transform_save, x,y,z ] = transformation_export( input_werte_matrix, 
 
 %Testing
 %frames = 25;
-frames = 4;
+frames = 3;
 
 %frames = 25;
 sekunden = 1;
@@ -22,8 +22,8 @@ sekunden = 1;
 winkel_frame = winkel/(sekunden*frames);
 translation_frame = translation_punkt/(sekunden*frames);
 
-%transformation_matrix_schritt = transformation_matrix_calc(winkel_frame,rotation_achse,translation_frame);
-transformation_matrix_schritt = rotation_translation_matrix_calc(winkel_frame,rotation_achse,rotation_punkt, translation_frame);
+transformation_matrix_schritt = transformation_matrix_calc(winkel_frame,rotation_achse,translation_frame);
+%transformation_matrix_schritt = rotation_translation_matrix_calc(winkel_frame,rotation_achse,rotation_punkt, translation_frame);
 
 transform_frame = input_werte_matrix;
 

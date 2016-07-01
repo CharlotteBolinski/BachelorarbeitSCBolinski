@@ -8,6 +8,7 @@
 %alte Daten löschen
 delete csv/rotation_A.csv
 delete csv/rotation_B.csv
+figure('name', 'Rotation Bewegung');
 
 %Ebenen erzeugen
 %[ x y z Random_werte_A] = ebene3D_scatter( -2,2,-2,2,'z',20,[1 0 0]);
@@ -61,8 +62,8 @@ rauschen = [rauschen_A ; rauschen_B];
 projektion_2D = [rauschen(:,1), rauschen(:,2)];
 
 %--eigener fuzzyCmeans-----------------------------------------------------
-[fuzzy_daten, fuzzy_cluster] = fuzzyCmeans_self(projektion_2D, 2);
-%[fuzzy_daten, fuzzy_cluster] = Copy_of_fuzzyCmeans_self(projektion_2D, 2);
+%[fuzzy_daten, fuzzy_cluster] = fuzzyCmeans_self(projektion_2D, 2);
+[fuzzy_daten, fuzzy_cluster] = Copy_of_fuzzyCmeans_self(projektion_2D, 2);
 
 size_fuzzy = size(fuzzy_daten);
 rows_f = size_fuzzy(1);
