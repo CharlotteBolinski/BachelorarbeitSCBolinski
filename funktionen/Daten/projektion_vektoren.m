@@ -1,38 +1,37 @@
-function [ bewegung ] = projektion_vektoren(input_daten, werte_pro_block)
+%projektion_vektoren_test(projektion_A, 6)
+%frames +1 weil startwert mit gespeichert wird
+
+function [ vektoren ] = projektion_vektoren(input_daten, frames)
 %Funktion erzeugt Bewegungsvektoren durch Diffrenzbildung
 %Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
     %input_daten = csvread(projektion_csv);
     input = input_daten';
-    input_size = size(input);
+    input_size = size(input)
 
     rows = input_size(1);
-    %columns = input_size(2);
 
-    for b = 1:werte_pro_block-1:rows
-
-        if  b+2*werte_pro_block-1 <= rows
-
-            %{
-            disp('b');
-            disp(b);
-            disp('b+werte_pro_block-1');
-            disp(b+werte_pro_block-1);
-            disp('b+2*werte_pro_block-1');
-            disp(b+2*werte_pro_block-1);
-            %}
-
-            block_aktuell = input(b:b+werte_pro_block-1,:); %random-1
-            %size(block_aktuell)
-
-            block_nachfolger = input(b+werte_pro_block:b+2*werte_pro_block-1,:); %random, random*2-1
-            %size(block_nachfolger)
-
-            bewegung = block_nachfolger-block_aktuell;
-            %size(bewegung)
-
-        end
-
+    werte_pro_block = rows/frames; %20
+    
+    %vektoren matrix initialisieren
+    vektoren = zeros(rows-werte_pro_block, 2);
+    
+    %Frames == Anzahl blöcke
+    for f = 0:(frames-2)
+        
+        block1 = input(f*werte_pro_block+1:(f+1)*werte_pro_block, :);
+        block2 = input((f+1)*werte_pro_block+1:(f+2)*werte_pro_block, :);
+        
+        %size_block1 = size(block1)
+        %size_block2 = size(block2)
+        
+        %i1 = f*werte_pro_block+1
+        %i2 = (f+1)*werte_pro_block
+        %i3 = (f+1)*werte_pro_block+1
+        %i4 = (f+2)*werte_pro_block
+        
+        vektoren(f*werte_pro_block+1:(f+1)*werte_pro_block, :) = block2-block1;
+        
     end
 
 end

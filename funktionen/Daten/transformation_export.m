@@ -12,9 +12,8 @@ function [ Transform_save, x,y,z ] = transformation_export( input_werte_matrix, 
 
 %Testing
 %frames = 25;
-frames = 3;
+frames = 5; %WEITERE Frames
 
-%frames = 25;
 sekunden = 1;
 
 %---------------------------------------------------------------------------
@@ -42,7 +41,7 @@ for s = 1:sekunden
         %transform_frame = transformData3D(transform_frame,transformation_matrix_schritt, translation_frame);
         
         [x,y,z] = transformEbene3D( x,y,z,transformation_matrix_schritt,color_array);
-
+        
         %schreibe in CSV
         dlmwrite(CSV_name, transform_frame, '-append');
         

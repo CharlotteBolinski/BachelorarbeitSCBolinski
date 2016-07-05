@@ -16,12 +16,17 @@ function [ Transformation_werte] = transformData3D(random_werte,transformation_m
     Transformation_werte_dehomo = Transformation_werte_homo/Transformation_werte_homo(1,4);
     Transformation_werte = [Transformation_werte_dehomo(:,1),Transformation_werte_dehomo(:,2),Transformation_werte_dehomo(:,3)];
     
-    %handle hier zuweisen
     Transformation_werte_plot = Transformation_werte';
     
+    %Plot-------------------------------------
     hold on
     scatter3(Transformation_werte_plot(1,:), Transformation_werte_plot(2,:), Transformation_werte_plot(3,:));   
     %hold off
+    
+    %Bewegungsvektoren plotten-----------------
+    %arrow(random_werte , Transformation_werte_plot);    
+
+            
     
     xlabel('x');
     ylabel('y');

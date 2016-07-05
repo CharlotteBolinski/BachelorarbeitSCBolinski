@@ -23,21 +23,35 @@ rotation_punkt_B = [0 0 0]; %Mittelpunkt, hier manuell berechnet
 %Linearinterpolation
 %einzeln..egal weil unterschiedliche CSV die wieder bel. konkatiniert werden können
 %schreiben in eine csv
+%ersten Datensatz berücksichtigen
+dlmwrite('csv/parallel_A.csv', Random_werte_A, '-append');
+dlmwrite('csv/parallel_B.csv', Random_werte_B, '-append');
+%Transformationen
 [Random_werte_A x y z] = transformation_export(Random_werte_A, x, y, z,[1 0 0], 0, [0 0 1] ,rotation_punkt_A,[0 3 0], 'csv/parallel_A.csv');
 [Random_werte_B x2 y2 z2] = transformation_export(Random_werte_B, x2, y2, z2,[0 1 0], 0, [0 0 1],rotation_punkt_B ,[0 -3 0], 'csv/parallel_B.csv');
 
 %Projektion
 projektion_A = Data3D_Projektion('csv/parallel_A.csv', 1, 1, [2 2]);
 projektion_B = Data3D_Projektion('csv/parallel_B.csv', 1, 1, [2 2]);
+%proj_A = projektion_A';
+%proj_B = projektion_B';
 %proj_gesamt = [projektion_A'; projektion_B'];
 
 
 %Bewegungsvektoren ausrechnen, Ausgangsdaten für Clustering --> MUSS ANDERS
 %BERECHNET WERDEN! WENN NUR 1 FRAME KEINE FUNKTIONALITÄT!
-proj_vektoren_A = projektion_vektoren(projektion_A, 20); %20=Anzahl Punkte pro block
-proj_vektoren_B = projektion_vektoren(projektion_B, 20);
+proj_vektoren_A = projektion_vektoren(projektion_A, 6); %20=Anzahl Punkte pro block
+proj_vektoren_B = projektion_vektoren(projektion_B, 6);
 proj_vektoren = [proj_vektoren_A ; proj_vektoren_B];
 %dlmwrite('parallel_vektoren.csv', proj_vektoren , '-append');
+
+%Bewegungsvektoren plotten - Versuch
+%figure()
+%quiver(projektion_A(:,1),  projektion_A(:,2), projektion_A(:,1),  projektion_A(:,2));
+%quiver3(Random_werte_A(:,1), Random_werte_A(:,2), Random_werte_A(:,3), Random_werte_A(:,1), Random_werte_A(:,2), Random_werte_A(:,3))
+%quiver3(Z,U,V,W)
+%Nur Anfangspunkte von den Vektoren... oder mittlerer Punkt
+%quiver(proj_A(:,1:), proj_A(:,2), proj_vektoren_A(:,1),proj_vektoren_A(:,2))
 
 %Rauschen auf Bewegungsvektoren
 rauschen_A = daten_rauschen(proj_vektoren_A, 0, 1); %daten, von, bis (random)
@@ -45,90 +59,29 @@ rauschen_B = daten_rauschen(proj_vektoren_B, 0, 1);
 rauschen = [rauschen_A ; rauschen_B];
 %dlmwrite('parallel_rauschen.csv', rauschen , '-append');
 
-%--eigener fuzzyCmeans-----------------------------------------------------
-projektion_2D_f = [rauschen(:,1), rauschen(:,2)];
-
-[fuzzy_daten, fuzzy_cluster] = fuzzyCmeans_self(projektion_2D_f, 2);
-
-size_fuzzy = size(fuzzy_daten);
-rows_f = size_fuzzy(1);
-columns_f = size_fuzzy(2);
-
-figure('name', 'Fuzzy C-means');
-for r = 1:rows_f
-    
-    clust = fuzzy_daten(r,1);
-    %disp(clust);
-
-    hold on
-    
-    switch clust
-        case 1
-            scatter(fuzzy_daten(r,2), fuzzy_daten(r,3), 50,[0 0 1]);
-        case 2
-            scatter(fuzzy_daten(r,2), fuzzy_daten(r,3), 50,[1 0 0]);
-        otherwise
-            error('ERROR: Bisher nur für 2D.'); 
-    end     
-end
-
-%Clusterzentren plotten..for wenn flexibel
-scatter(fuzzy_cluster(1,1), fuzzy_cluster(1,2), 50,[0 0 0]);
-scatter(fuzzy_cluster(1,1), fuzzy_cluster(1,2), 50,[0 0 0], '+');
-
-scatter(fuzzy_cluster(2,1), fuzzy_cluster(2,2), 50,[0 0 0]);
-scatter(fuzzy_cluster(2,1), fuzzy_cluster(2,2), 50,[0 0 0], '+');
-    
-hold off
-
-xlabel('x');
-ylabel('y');
-
-axis equal
-%grid on
-hold off
-
-%--eigener kmeans---------------------------------------------------------
+%--Clustering--------------------------------------------------------------
 %projektion_2D = [proj_vektoren(:,1), proj_vektoren(:,2)];
-projektion_2D = [rauschen(:,1), rauschen(:,2)];
+projektion_2D_alle = [rauschen(:,1), rauschen(:,2)];
 
-[kmeans_daten,kmeans_cluster] = kmeans_self(projektion_2D, 2);
+%frame_select( projektion_daten, frame1, frame2, frames_gesamt)
+frames_A = frame_select( rauschen_A, 1, 2, 6);
+frames_B = frame_select( rauschen_B, 1, 2, 6);
+frames = [frames_A ; frames_B];
 
-size_kmeans = size(kmeans_daten);
-rows = size_kmeans(1);
-columns = size_kmeans(2);
+%projektion_2D = [rauschen(:,1), rauschen(:,2)];
+projektion_2D = [frames(:,1), frames(:,2)];
 
-figure('name', 'K-means');
-for r = 1:rows
-    
-    clust = kmeans_daten(r,1);
-    %disp(clust);
+%--eigener fuzzyCmeans-----------------------------------------------------
+%Clustering Bewegungsvektoren
+[fuzzy_daten, fuzzy_cluster] = fuzzyCmeans_self(projektion_2D, 2);
+clusterPlot(fuzzy_daten, fuzzy_cluster, 'Fuzzy C-means');
 
-    hold on
-    
-    switch clust
-        case 1
-            scatter(kmeans_daten(r,2), kmeans_daten(r,3), 50,[0 0 1]);
-        case 2
-            scatter(kmeans_daten(r,2), kmeans_daten(r,3), 50,[1 0 0]);
-        otherwise
-            error('ERROR: Bisher nur für 2D.'); 
-    end
-    
-end
+%--eigener fuzzyCmeans homographie-----------------------------------------
+%Clustering Bewegungsvektoren
+[fuzzy_daten_homo, fuzzy_cluster_homo] = fuzzyCmeans_homo(projektion_2D, 2);
+clusterPlot( fuzzy_daten_homo, fuzzy_cluster_homo, 'Fuzzy C-means, Homographie' );
 
-%Clusterzentren plotten..for wenn flexibel
-scatter(kmeans_cluster(1,1), kmeans_cluster(1,2), 50,[0 0 0]);
-scatter(kmeans_cluster(1,1), kmeans_cluster(1,2), 50,[0 0 0], '+');
-
-scatter(kmeans_cluster(2,1), kmeans_cluster(2,2), 50,[0 0 0]);
-scatter(kmeans_cluster(2,1), kmeans_cluster(2,2), 50,[0 0 0], '+');
-    
-hold off
-
-xlabel('x');
-ylabel('y');
-
-axis equal
-%grid on
-hold off
+%--eigener kmeans----------------------------------------------------------
+%Clustering Bewegungsvektoren
+%[kmeans_daten,kmeans_cluster] = kmeans_self(projektion_2D, 2);
+%clusterPlot( kmeans_daten, kmeans_cluster, 'K-means' );

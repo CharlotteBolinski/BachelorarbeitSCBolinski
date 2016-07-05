@@ -1,0 +1,45 @@
+function [ output_args ] = clusterPlot( cluster_daten, cluster_zentrum, name_figure )
+%Plot der geclusterten Daten
+
+size_fuzzy = size(cluster_daten);
+rows_f = size_fuzzy(1);
+%columns_f = size_fuzzy(2);
+
+figure('name', name_figure);
+for r = 1:rows_f
+    
+    clust = cluster_daten(r,1);
+    %disp(clust);
+
+    hold on
+    
+    %beliebig viele cases wenn mehrere Cluster
+    switch clust
+        case 1
+            scatter(cluster_daten(r,2), cluster_daten(r,3), 50,[0 0 1]);
+        case 2
+            scatter(cluster_daten(r,2), cluster_daten(r,3), 50,[1 0 0]);
+        otherwise
+            error('ERROR: Bisher nur für 2D.'); 
+    end
+    
+end
+
+%Clusterzentren plotten..for wenn flexibel
+scatter(cluster_zentrum(1,1), cluster_zentrum(1,2), 50,[0 0 0]);
+scatter(cluster_zentrum(1,1), cluster_zentrum(1,2), 50,[0 0 0], '+');
+
+scatter(cluster_zentrum(2,1), cluster_zentrum(2,2), 50,[0 0 0]);
+scatter(cluster_zentrum(2,1), cluster_zentrum(2,2), 50,[0 0 0], '+');
+    
+hold off
+
+xlabel('x');
+ylabel('y');
+
+axis equal
+%grid on
+hold off
+
+end
+

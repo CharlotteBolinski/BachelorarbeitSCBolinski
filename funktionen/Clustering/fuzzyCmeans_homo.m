@@ -20,7 +20,7 @@ function [ clustering_daten,cluster_zentrum] = fuzzyCmeans_homo( input_daten, nu
     while abs(max(sum(p-p_save))) > 0.01 %Differenz Wahrscheinlichkeiten kleiner als epsilon
     %for i = 1:30
     
-    p_diff = abs(max(sum(p-p_save)))
+    p_diff = abs(max(sum(p-p_save)));
     
     %Cluster update berechnen----------------------------------
     %cluster_zentrum_save = cluster_zentrum_neu;
@@ -31,7 +31,7 @@ function [ clustering_daten,cluster_zentrum] = fuzzyCmeans_homo( input_daten, nu
     zentrum1 = [sum(input_daten(:,1).*(p(:,1).^m))/sum_p1 , sum(input_daten(:,2).*(p(:,1).^m))/sum_p1];
     zentrum2 = [sum(input_daten(:,1).*(p(:,2).^m))/sum_p2 , sum(input_daten(:,2).*(p(:,2).^m))/sum_p2];
     
-    cluster_zentrum = [zentrum1; zentrum2]   
+    cluster_zentrum = [zentrum1; zentrum2];
     
     %Abstand aller Datenpunkte zu Clusterzentren---------------------------
     %clusterzentrum auf 2 hard gecoded, sonst weitere loop
@@ -42,7 +42,7 @@ function [ clustering_daten,cluster_zentrum] = fuzzyCmeans_homo( input_daten, nu
        distances(row, 4) = sum((input_daten(row,:) - cluster_zentrum(2, :)).^2); %Euklidischer Abstand zu Zentrum 2, gewichtet
        
        %Zuweisen eines Cluster Label
-       if (p(row, 1).^m) * distances(row, 3) < (p(row, 2).^m) * distances(row, 4) 
+       if (p(row, 1).^m) * distances(row, 3) < (p(row, 2).^m) * distances(row, 4); 
            distances(row, 1) = 1;
        else
            distances(row, 1) = 2;
@@ -66,8 +66,8 @@ function [ clustering_daten,cluster_zentrum] = fuzzyCmeans_homo( input_daten, nu
     
     size_clust1 = size(cluster1);
     size_clust2 = size(cluster2);
-    member1_fuzzy = size_clust1(1)
-    member2_fuzzy = size_clust2(1)
+    member1_fuzzy = size_clust1(1);
+    member2_fuzzy = size_clust2(1);
     
     dist_cluster1 = distances(:,3);
     dist_cluster2 = distances(:,4);
@@ -81,7 +81,7 @@ function [ clustering_daten,cluster_zentrum] = fuzzyCmeans_homo( input_daten, nu
     %homo_p2
     
     p_save = p;
-    p = [dist_p1 dist_p2]
+    p = [dist_p1 dist_p2];
     
 end
 

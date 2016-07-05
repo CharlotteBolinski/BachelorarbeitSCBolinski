@@ -62,86 +62,18 @@ rauschen = [rauschen_A ; rauschen_B];
 projektion_2D = [rauschen(:,1), rauschen(:,2)];
 
 %--eigener fuzzyCmeans-----------------------------------------------------
-%[fuzzy_daten, fuzzy_cluster] = fuzzyCmeans_self(projektion_2D, 2);
-[fuzzy_daten, fuzzy_cluster] = Copy_of_fuzzyCmeans_self(projektion_2D, 2);
+[fuzzy_daten, fuzzy_cluster] = fuzzyCmeans_self(projektion_2D, 2);
+%[fuzzy_daten, fuzzy_cluster] = Copy_of_fuzzyCmeans_self(projektion_2D, 2);
 
-size_fuzzy = size(fuzzy_daten);
-rows_f = size_fuzzy(1);
-columns_f = size_fuzzy(2);
+clusterPlot( fuzzy_daten, fuzzy_cluster, 'Fuzzy C-means' );
 
-figure('name', 'Fuzzy C-means');
-for r = 1:rows_f
-    
-    clust = fuzzy_daten(r,1);
-    %disp(clust);
+%--eigener fuzzyCmeans homographie-----------------------------------------------------
+[fuzzy_daten_homo, fuzzy_cluster_homo] = fuzzyCmeans_homo(projektion_2D, 2);
+%[fuzzy_daten, fuzzy_cluster] = Copy_of_fuzzyCmeans_self(projektion_2D, 2);
 
-    hold on
-    
-    switch clust
-        case 1
-            scatter(fuzzy_daten(r,2), fuzzy_daten(r,3), 50,[0 0 1]);
-        case 2
-            scatter(fuzzy_daten(r,2), fuzzy_daten(r,3), 50,[1 0 0]);
-        otherwise
-            error('ERROR: Bisher nur für 2D.'); 
-    end
-    
-end
-
-%Clusterzentren plotten..for wenn flexibel
-scatter(fuzzy_cluster(1,1), fuzzy_cluster(1,2), 50,[0 0 0]);
-scatter(fuzzy_cluster(1,1), fuzzy_cluster(1,2), 50,[0 0 0], '+');
-
-scatter(fuzzy_cluster(2,1), fuzzy_cluster(2,2), 50,[0 0 0]);
-scatter(fuzzy_cluster(2,1), fuzzy_cluster(2,2), 50,[0 0 0], '+');
-    
-hold off
-
-xlabel('x');
-ylabel('y');
-
-axis equal
-%grid on
-hold off
+clusterPlot( fuzzy_daten_homo, fuzzy_cluster_homo, 'Fuzzy C-means, Homographie' );
 
 %--eigener kmeans----------------------------------------------------------
 [kmeans_daten,kmeans_cluster] = kmeans_self(projektion_2D, 2);
 
-size_kmeans = size(kmeans_daten);
-rows = size_kmeans(1);
-columns = size_kmeans(2);
-
-figure('name', 'K-means');
-for r = 1:rows
-    
-    clust = kmeans_daten(r,1);
-    %disp(clust);
-
-    hold on
-    
-    switch clust
-        case 1
-            scatter(kmeans_daten(r,2), kmeans_daten(r,3), 50,[0 0 1]);
-        case 2
-            scatter(kmeans_daten(r,2), kmeans_daten(r,3), 50,[1 0 0]);
-        otherwise
-            error('ERROR: Bisher nur für 2D.'); 
-    end
-    
-end
-
-%Clusterzentren plotten..for wenn flexibel
-scatter(kmeans_cluster(1,1), kmeans_cluster(1,2), 50,[0 0 0]);
-scatter(kmeans_cluster(1,1), kmeans_cluster(1,2), 50,[0 0 0], '+');
-
-scatter(kmeans_cluster(2,1), kmeans_cluster(2,2), 50,[0 0 0]);
-scatter(kmeans_cluster(2,1), kmeans_cluster(2,2), 50,[0 0 0], '+');
-    
-hold off
-
-xlabel('x');
-ylabel('y');
-
-axis equal
-%grid on
-hold off 
+clusterPlot( kmeans_daten, kmeans_cluster, 'K-means' );
