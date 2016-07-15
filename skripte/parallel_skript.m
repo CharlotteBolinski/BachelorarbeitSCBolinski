@@ -35,7 +35,7 @@ projektion_A = Data3D_Projektion('csv/parallel_A.csv', 1, 1, [2 2]);
 projektion_B = Data3D_Projektion('csv/parallel_B.csv', 1, 1, [2 2]);
 %proj_A = projektion_A';
 %proj_B = projektion_B';
-%proj_gesamt = [projektion_A'; projektion_B'];
+proj_gesamt = [projektion_A'; projektion_B'];
 
 
 %Bewegungsvektoren ausrechnen, Ausgangsdaten für Clustering --> MUSS ANDERS
@@ -59,6 +59,7 @@ rauschen_B = daten_rauschen(proj_vektoren_B, 0, 1);
 rauschen = [rauschen_A ; rauschen_B];
 %dlmwrite('parallel_rauschen.csv', rauschen , '-append');
 
+%{
 %--Clustering--------------------------------------------------------------
 %projektion_2D = [proj_vektoren(:,1), proj_vektoren(:,2)];
 projektion_2D_alle = [rauschen(:,1), rauschen(:,2)];
@@ -85,3 +86,4 @@ clusterPlot( fuzzy_daten_homo, fuzzy_cluster_homo, 'Fuzzy C-means, Homographie' 
 %Clustering Bewegungsvektoren
 %[kmeans_daten,kmeans_cluster] = kmeans_self(projektion_2D, 2);
 %clusterPlot( kmeans_daten, kmeans_cluster, 'K-means' );
+%}

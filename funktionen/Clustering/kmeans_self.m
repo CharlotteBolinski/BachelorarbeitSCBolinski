@@ -1,4 +1,4 @@
-function [ clustering_daten,cluster_zentrum_neu ] = kmeans_self( input_daten, numCluster )
+function [ cluster1, cluster2, cluster_zentrum_neu ] = kmeans_self( input_daten, numCluster )
 
     %Input Daten Größe
     input_size = size(input_daten); %input = column Vektor

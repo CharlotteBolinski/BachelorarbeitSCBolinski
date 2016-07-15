@@ -1,8 +1,10 @@
-function [ clustering_daten,cluster_zentrum] = fuzzyCmeans_self( input_daten, numCluster )
+function [ cluster1, cluster2, clustering_daten_out, cluster_zentrum] = fuzzyCmeans_self( input_daten, numCluster )
     
     %Input Daten Größe
     input_size = size(input_daten); %input = column Vektor
     rows = input_size(1);
+    
+    %inputtt = input_daten
     
     %Erste initialisierung Clustering--------------------------------------
     %speichern der Clusterdaten: [label, indices , Abstände zu Cluster 1 , Abstände zu Cluster 2];
@@ -20,7 +22,7 @@ function [ clustering_daten,cluster_zentrum] = fuzzyCmeans_self( input_daten, nu
     while abs(max(sum(p-p_save))) > 0.01 %Differenz Wahrscheinlichkeiten kleiner als epsilon
     %for i = 1:30
     
-    p_diff = abs(max(sum(p-p_save)))
+    %p_diff = abs(max(sum(p-p_save)))
     
     %Cluster update berechnen----------------------------------
     %cluster_zentrum_save = cluster_zentrum_neu;
@@ -52,7 +54,8 @@ function [ clustering_daten,cluster_zentrum] = fuzzyCmeans_self( input_daten, nu
     %disp(distances);
     
     %Daten holen und Clusterzentren neu berechnen--------------------------
-    clustering_daten = [distances(:, 1), input_daten];
+    %clustering_daten = [distances(:, 1), input_daten];
+    clustering_daten = [distances(:, 1), input_daten]; %Ausgangsdaten (Vektoren) mit index
     
     cluster1 = clustering_daten(clustering_daten(:,1) == 1,:); %alle Zeilen, wo clustering_daten == 1
     cluster2 = clustering_daten(clustering_daten(:,1) == 2,:);
@@ -64,10 +67,10 @@ function [ clustering_daten,cluster_zentrum] = fuzzyCmeans_self( input_daten, nu
     %Identifiziert, wie stark der Punkt zu dem einen oder anderen Cluster
     %gehört.
     
-    size_clust1 = size(cluster1);
-    size_clust2 = size(cluster2);
-    member1_fuzzy = size_clust1(1)
-    member2_fuzzy = size_clust2(1)
+    %size_clust1 = size(cluster1);
+    %size_clust2 = size(cluster2);
+    %member1_fuzzy = size_clust1(1)
+    %member2_fuzzy = size_clust2(1)
     
     dist_cluster1 = distances(:,3);
     dist_cluster2 = distances(:,4);
@@ -81,9 +84,19 @@ function [ clustering_daten,cluster_zentrum] = fuzzyCmeans_self( input_daten, nu
     %homo_p2
     
     p_save = p;
-    p = [dist_p1 dist_p2]
-    
-end
+    p = [dist_p1 dist_p2];
 
+    end
+    
+    %Outputs
+    p_fuzzy = p;
+    
+    %distances(:, 1) == Label
+    % p enthält wahrscheinlichkeit für [cluster1 , cluster2]
+    %clustering_daten_out = [distances(:, 1), input_daten, p];
+    
+    %label, index, vektoren_x, vektoren_y, wahrscheinlichkeiten
+    clustering_daten_out = [distances, input_daten, p];
+    
 end
 

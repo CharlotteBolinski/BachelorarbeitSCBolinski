@@ -1,6 +1,18 @@
-function [ output_args ] = clusterPlot( cluster_daten, cluster_zentrum, name_figure )
+%function [ output_args ] = clusterPlot( cluster_daten, cluster_zentrum, name_figure )
+function [ ] = clusterPlot( cluster1, cluster2 , cluster_zentrum, name_figure )
 %Plot der geclusterten Daten
 
+figure('name', name_figure);
+
+scatter(cluster1(:,2), cluster1(:,3), 50,[0 0 1]);
+hold on
+scatter(cluster2(:,2), cluster2(:,3), 50,[1 0 0]);
+
+
+legend('Cluster 1','Cluster 2');
+
+
+%{
 size_fuzzy = size(cluster_daten);
 rows_f = size_fuzzy(1);
 %columns_f = size_fuzzy(2);
@@ -24,6 +36,7 @@ for r = 1:rows_f
     end
     
 end
+%}
 
 %Clusterzentren plotten..for wenn flexibel
 scatter(cluster_zentrum(1,1), cluster_zentrum(1,2), 50,[0 0 0]);

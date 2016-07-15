@@ -1,48 +1,67 @@
+%HIER PASSIERT ERSTMAL ALLES TESTWEISE NUR FÜR 2 FRAMES
+
 %Vektoren Frame 1-2 auswählen**********************************************
-%frame_select( projektion_daten, frame1, frame2, frames_gesamt)
-vektoren_A = frame_select( rauschen_A, 1, 2, 6);
-vektoren_B = frame_select( rauschen_B, 1, 2, 6);
-vektoren = [vektoren_A ; vektoren_B];
+vektoren_A = rauschen_A(1:40, :); %nur Vektoren Frame1->Frame2 holen, 1. Datensatz
+vektoren_B = rauschen_B(1:40, :);
+vektoren_2D = [vektoren_A ; vektoren_B];
 
-%projektion_2D = [rauschen(:,1), rauschen(:,2)];
-vektoren_2D = [vektoren(:,1), vektoren(:,2)];
+%vektoren_2D = [vektoren(:,1), vektoren(:,2)];
 
-%Daten Frame 1-2 auswählen*************************************************
-projektion_A_select1 = frame_select(projektion_A', 1, 2, 6);
-projektion_A_select2 = frame_select(projektion_A', 2, 3, 6);
+proj_20A = projektion_A(:, 1:40); %nur Vektoren Frame1->Frame2 holen, 1. Datensatz
+proj_20B = projektion_B(:, 1:40);
+projektion_2frames = [proj_20A'; proj_20B'];
 
-%entspricht Bewegungsvektoren
-%diff_A = projektion_A_select2-projektion_A_select1 
-
-%Testing
-%size(projektion_A_select1)
-%size(projektion_A_select2)
-%diff = projektion_A_select1(:,:) - projektion_A_select2(:,:);
-
-%2. Cluster
-projektion_B_select1 = frame_select(projektion_B', 1, 2, 6);
-projektion_B_select2 = frame_select(projektion_B', 2, 3, 6);
-
-%projektion_2D_select = [projektion_select(:,1), projektion_select(:,2)]
-
-%--------------------------------------------------------------------------
 %fuzzy c-means Frame 1-2
-%[fuzzy_daten_homo, fuzzy_cluster_homo] = fuzzyCmeans_homo(vektoren_2D, 2);
-%clusterPlot( fuzzy_daten_homo, fuzzy_cluster_homo, 'Fuzzy C-means, Homographie');
+%Vorclustering macht vor allem mit den Positionen Sinn!!
+%[fuzzy_cluster1, fuzzy_cluster2 , fuzzy_komplett, fuzzy_clusterZentrum] = fuzzyCmeans_self(vektoren_2D, 2); %2 wird noch nicht gebraucht, Anzahl Cluster
+[fuzzy_cluster1, fuzzy_cluster2 , fuzzy_komplett2frames, fuzzy_clusterZentrum2frames] = fuzzyCmeans_self(projektion_2frames, 2); %2 wird noch nicht gebraucht, Anzahl Cluster
+clusterPlot( fuzzy_cluster1, fuzzy_cluster2 , fuzzy_clusterZentrum2frames, 'Fuzzy C-means 2 Frames');
+
+%fuzzy c-means alle Frames
+%[fuzzy_cluster1, fuzzy_cluster2 , fuzzy_komplett4alle, fuzzy_clusterZentrum4alle] = fuzzyCmeans_self(proj_gesamt, 2); %2 wird noch nicht gebraucht, Anzahl Cluster
+%clusterPlot( fuzzy_cluster1, fuzzy_cluster2 , fuzzy_clusterZentrum4alle, 'Fuzzy C-means alle Frames');
+
 
 %--------------------------------------------------------------------------
-%Homographie-Schätzung Frame 1-2
-%Hier bekannt: es sind 2 Körper/2 Cluster, sonst für jedes Cluster Iteration/Abschätzung durchführen!
-%function [ homographie_matrix,  homographie_fehler] = homographie_cluster( projektion_2frames, punkte_pro_frame)
-%immer 2 Frames werden hier übergeben!!
-[homographie_matrixA, homographie_fehlerA] = homographie_cluster( projektion_A_select1, projektion_A_select2)
-[homographie_matrixB, homographie_fehlerB] = homographie_cluster( projektion_B_select1, projektion_B_select2)
-
-%function [ homographie_matrix,  homographie_fehler] = homographie( projektion_gesamt, anzahl_frames, frame_index_start, frame_index_ziel)
-%[homographie_matrix, homographie_fehler] = homographie( projektion_A', 2, 1, 2)
+%Clustering mit K-means
+%[kmeans_cluster1, kmeans_cluster2 ,kmeans_clusterzentrum] = kmeans_self(projektion_2frames, 2);
+%clusterPlot( kmeans_cluster1, kmeans_cluster2 ,kmeans_clusterzentrum, 'K-means' );
 
 %--------------------------------------------------------------------------
 %Clustering mit Homographie-Fehler, vor geclustert durch Abstand
+%Übergeben werden: 
+%   - Vorgeclusterte Daten label, x, y
+%   - homographie-matrix
+%
+%Zurückgegeben wird:
+%   - berichtigte Daten getrennt in Clustern
+%   - berichtigte Clusterdaten gesamt für Plot
+
+proj_A = projektion_A';
+proj_B = projektion_B';
+projektionA_select_start = proj_A(1:20, :);
+projektionB_select_start = proj_B(1:20, :);
+projektion_start = [projektionA_select_start; projektionB_select_start];
+
+%vorclustering_komplett := [label, index, abstand_cluster1, abstand_cluster2, x_vektoren, y_vektoren, p, projektion_daten_start]
+vorclustering_komplett = [fuzzy_komplett2frames, projektion_2frames];
+
+%ha := homographie, Abstand
+[fuzzy_cluster_ha1, fuzzy_cluster_ha2 , fuzzy_clusterZentrum_ha] = fuzzyCmeans_homo_abstand(vorclustering_komplett, vektoren_2D, 2); %2 wird noch nicht gebraucht, Anzahl Cluster
+clusterPlot( fuzzy_cluster_ha1, fuzzy_cluster_ha2 , fuzzy_clusterZentrum_ha, 'Fuzzy C-means, Homographie und Abstand Optimierung');
+
+%--------------------------------------------------------------------------
+%Clustering nur mit Homographie-Fehler
+%vorclustering_komplett := [label, index, abstand_cluster1, abstand_cluster2, x_vektoren, y_vektoren, p, projektion_daten_start]
+%[fuzzy_cluster_homo1, fuzzy_cluster_homo2 , fuzzy_clusterZentrum_homo] = fuzzyCmeans_homo(vorclustering_komplett, 2); %2 wird noch nicht gebraucht, Anzahl Cluster
+
+[fuzzy_cluster_homo1, fuzzy_cluster_homo2 , fuzzy_clusterZentrum_homo] = fuzzyCmeans_homo_pur(projektion_2frames, vektoren_2D, 2);
+clusterPlot( fuzzy_cluster_homo1, fuzzy_cluster_homo2 , fuzzy_clusterZentrum_homo, 'Fuzzy C-means, nur Homographie Optimierung');
+
+
+
+
+
 
 
 

@@ -45,6 +45,8 @@ start_s = size(start);
 %ziel_s = size(ziel)
 daten_punkte = start_s(1);
 
+Punktmatrix = zeros(daten_punkte, 8);
+
 homographie_fehler_tmp = zeros(daten_punkte,1);
 %Zielmatrix = zeros(daten_punkte*2,1);
 %Punktmatrix = zeros(daten_punkte*2,8)
