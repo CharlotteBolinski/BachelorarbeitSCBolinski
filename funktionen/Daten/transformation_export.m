@@ -38,7 +38,6 @@ for s = 1:sekunden
     for f = 1:frames
 
         transform_frame = transformData3D(transform_frame,transformation_matrix_schritt);
-        %transform_frame = transformData3D(transform_frame,transformation_matrix_schritt, translation_frame);
         
         [x,y,z] = transformEbene3D( x,y,z,transformation_matrix_schritt,color_array);
         
@@ -50,6 +49,8 @@ for s = 1:sekunden
 
 end
 
+
+title('Bewegung 2er Ebenen, 2 Frames');
 %Speichern des letzen Ergebnisses für weitere Transformationen
 Transform_save = transform_frame;
 

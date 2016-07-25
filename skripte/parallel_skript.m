@@ -13,7 +13,7 @@ figure('name', 'Parallele Bewegung');
 %Ebenen erzeugen
 %[ x y z Random_werte_A] = ebene3D_scatter( -2,2,-2,2,'z',20,[1 0 0]);
 [ x y z Random_werte_A] = ebene3D_scatter( 2,4,2,4,'z',20,[1 0 0]);
-[ x2 y2 z2 Random_werte_B] = ebene3D_scatter( 6,8,6,8,'z',20,[0 1 0]);
+[ x2 y2 z2 Random_werte_B] = ebene3D_scatter( 6,8,6,8,'z',20,[0 0 1]);
 
 %drehachsen Mittelpunkt
 %drehachse_A = [3 3 0];
@@ -28,7 +28,7 @@ dlmwrite('csv/parallel_A.csv', Random_werte_A, '-append');
 dlmwrite('csv/parallel_B.csv', Random_werte_B, '-append');
 %Transformationen
 [Random_werte_A x y z] = transformation_export(Random_werte_A, x, y, z,[1 0 0], 0, [0 0 1] ,rotation_punkt_A,[0 3 0], 'csv/parallel_A.csv');
-[Random_werte_B x2 y2 z2] = transformation_export(Random_werte_B, x2, y2, z2,[0 1 0], 0, [0 0 1],rotation_punkt_B ,[0 -3 0], 'csv/parallel_B.csv');
+[Random_werte_B x2 y2 z2] = transformation_export(Random_werte_B, x2, y2, z2,[0 0 1], 0, [0 0 1],rotation_punkt_B ,[0 -3 0], 'csv/parallel_B.csv');
 
 %Projektion
 projektion_A = Data3D_Projektion('csv/parallel_A.csv', 1, 1, [2 2]);
@@ -41,7 +41,7 @@ proj_gesamt = [projektion_A'; projektion_B'];
 %Bewegungsvektoren ausrechnen, Ausgangsdaten für Clustering --> MUSS ANDERS
 %BERECHNET WERDEN! WENN NUR 1 FRAME KEINE FUNKTIONALITÄT!
 proj_vektoren_A = projektion_vektoren(projektion_A, 6); %20=Anzahl Punkte pro block
-proj_vektoren_B = projektion_vektoren(projektion_B, 6);
+proj_vektoren_B = projektion_vektoren(projektion_B, 6); %frames +1 wegen Anfangswerten
 proj_vektoren = [proj_vektoren_A ; proj_vektoren_B];
 %dlmwrite('parallel_vektoren.csv', proj_vektoren , '-append');
 

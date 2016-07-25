@@ -1,157 +1,203 @@
-function [ cluster1, cluster2, cluster_zentrum] = fuzzyCmeans_homo_pur( input, vektoren, numCluster )
+function [ cluster1, cluster2, homo_fehler] = fuzzyCmeans_homo_pur( cluster_input, vektoren, numCluster)
     
     %Input Daten Größe
-    input_size = size(input); %input = column Vektor
+    input_size = size(cluster_input); %input = column Vektor
     rows = input_size(1);
     
-    input_daten = [zeros(rows,1), input];
-    vektor_daten = [zeros(rows,1), vektoren];
-    prozent50 = rows/2;
+    input_daten = [cluster_input, zeros(rows,1)]; %label, cluster_daten 1. Frame == Projektionsdaten 1. Frame, zeros = Fehlerwerte
+    vektor_daten = [cluster_input(:,1), vektoren]; %label unnötig??
     
     %Erste initialisierung Clustering--------------------------------------
     %speichern der Clusterdaten: [label, Fehler Homographie zu Cluster 1 , Fehler Homographie zu Cluster 2];
-    homo_fehler = [zeros(rows,1), zeros(rows,1) , zeros(rows,1)];
+    homo_fehler = [zeros(rows,1), zeros(rows,1) , zeros(rows,1)]; %label unnötig??
     
-    %Erste initialisierung Wahrscheinlichkeit
-    p = rand(rows, 2); %2=Anzahl Cluster, hier random...
-    p_save = zeros(rows,2); %2=Anzahl Cluster
-    m = 2; %fuzzy Parameter/ Gewichtung.. fuzzyness Parameter, Standard 2
+    filter1 = 5;
+    filter2 = 5;
     
+    z1_oben = 1;
+    z2_oben = 1;
+    z1_oben_save = 0;
+    z2_oben_save = 0;
+   
+
     %START DES CLUSTERINGS-------------------------------------------------
     %so lange, bis sich das Clusterzentrum nicht mehr ändert...
     %...keine Datenpunkte mehr dazu kommen und daher keien Neuberechnung
-    %while abs(max(sum(p-p_save))) > 0.01 %Differenz Wahrscheinlichkeiten kleiner als epsilon
-    for i = 1:2
+    while filter1 && filter2 > 1 %Differenz Wahrscheinlichkeiten kleiner als epsilon
+    %for i = 1:300
     
-    p_diff = abs(max(sum(p-p_save)))
-    
-    %Cluster update berechnen----------------------------------
-    %cluster_zentrum_save = cluster_zentrum_neu;
-    
-    sum_p1 = sum(p(:,1).^m); %Wahrscheinlichkeiten Cluster 1
-    sum_p2 = sum(p(:,2).^m); %Wahrscheinlichkeiten Cluster 2
-    
-    zentrum1 = [sum(input_daten(:,2).*(p(:,1).^m))/sum_p1 , sum(input_daten(:,3).*(p(:,1).^m))/sum_p1];
-    zentrum2 = [sum(input_daten(:,2).*(p(:,2).^m))/sum_p2 , sum(input_daten(:,3).*(p(:,2).^m))/sum_p2];
-    
-    cluster_zentrum = [zentrum1; zentrum2]   
-    
-    %Homographie Schätzung einzelne Cluster--------------------------------
-    if input_daten(1,1) == 0 %noch kein Cluster vorhanden
-        start1 = input_daten(1:prozent50, 2:3);
-        start2 = input_daten((prozent50+1):rows, 2:3);
+    %fehler_diff =     
         
-        %{
-        s1 = size(start1)
-        s2 = size(start2)
-        v1 = size((vektor_daten(1:prozent50, :)))
-        
-        r = rows
-        p = prozent50
-        v = size(vektor_daten)
-        
-        v2 = size((vektor_daten(prozent50+1:30, :)))
-        %}
-        
-        vektoren1 = vektor_daten(1:prozent50, 2:3);
-        vektoren2 = vektor_daten((prozent50+1):rows, 2:3);
-        
-        
-        ziel1 =  start1 + vektoren1;
-        ziel2 =  start2 + vektoren2;
-        
-        
-    else   
-        start1 = input_daten(input_daten(:,1) == 1, 2:3); %Cluster vorhanden
-        start2 = input_daten(input_daten(:,1) == 2, 2:3);
-        
+        %Homographie Schätzung einzelne Cluster-------------------------------- 
+        start1 = input_daten(input_daten(:,1) == 1, 2:3); %Cluster1 Daten
+        start2 = input_daten(input_daten(:,1) == 2, 2:3); %Cluster2 Daten
+
         vektoren1 = vektor_daten(vektor_daten(:,1) == 1, 2:3);
         vektoren2 = vektor_daten(vektor_daten(:,1) == 2, 2:3);
-        
+
         ziel1 =  start1 + vektoren1;
         ziel2 =  start2 + vektoren2;
-    end
-    
-    [homographie_matrix1, homo_fehler1] = homographie_cluster(start1, ziel1); %fehler wird nicht benötigt
-    [homographie_matrix2, homo_fehler2] = homographie_cluster(start2, ziel2);
-    
-    %matrix1 = homographie_matrix1
-    %matrix2 = homographie_matrix2
+
+        [homographie_matrix1, homo_fehler1] = homographie_cluster(start1, ziel1); 
+        [homographie_matrix2, homo_fehler2] = homographie_cluster(start2, ziel2);
+
+        cluster1_daten = [input_daten(input_daten(:,1) == 1, 1:3), homo_fehler1];
+        cluster2_daten = [input_daten(input_daten(:,1) == 2, 1:3), homo_fehler2];        
+
+        input_daten = [cluster1_daten; cluster2_daten];
+
+
+        %Plot der HOMOGRAPHIE FEHLER pro Cluster
+        %{
+        size_f1 = size(homo_fehler1);
+        rows_f1 = size_f1(1);
+        rf1 = 1:rows_f1;
+
+        size_f2 = size(homo_fehler2);
+        rows_f2 = size_f2(1);
+        rf2 = 1:rows_f2;
+
+        figure('name', 'Homographie Fehler direkte Cluster 1+2');
+        plot(rf1, homo_fehler1, 'r');
+        hold on
+        %figure('name', 'Homographie Fehler Cluster 2');
+        plot(rf2, homo_fehler2, 'b');
+        hold off
+        %}
+
     
     %Homographie Fehler alle Cluster---------------------------------------
-    homographie_invers1 = inv(homographie_matrix1);
-    homographie_invers2 = inv(homographie_matrix2);
     
-    start = input;
-    ziel = input+vektoren;
+        homographie_invers1 = inv(homographie_matrix1);
+        homographie_invers2 = inv(homographie_matrix2);
 
-    for h = 1:rows
-        start_pkt = [start(h,:),1]'; %homogene koordinaten des aktuellen Punktes
-        ziel_pkt = [ziel(h,:),1]';
-        
-        teil1_1(h,:) = abs(start_pkt - homographie_invers1*ziel_pkt).^2;
-        teil2_1(h,:) = abs(ziel_pkt - homographie_matrix1*start_pkt).^2;
-        fehler1 = teil1_1 + teil2_1;
-        
-        teil1_2(h,:) = abs(start_pkt - homographie_invers2*ziel_pkt).^2;
-        teil2_2(h,:) = abs(ziel_pkt - homographie_matrix2*start_pkt).^2;
-        fehler2 = teil1_2 + teil2_2;
-        
-    end
+        %anstatt 20 = Werte pro Block, damit dynamisch
+        start = input_daten(:,2:3);
+        ziel = start+vektoren;
 
-    %Hp-q Homographie-Fehler für jeden Punkt!
-    for hf = 1:rows
-         homo_fehler(hf,2) = sum(fehler1(hf,:)/3);
-         homo_fehler(hf,3) = sum(fehler2(hf,:)/3);
+        for h = 1:rows
+
+            start_pkt = [start(h,:), 1]';
+            ziel_pkt = [ziel(h,:), 1]';
+    
+            start_inv_1 = homographie_invers1*ziel_pkt;
+            start_inv_pkt_1 = start_inv_1(1:2)./start_inv_1(3);
+
+            start_inv_2 = homographie_invers2*ziel_pkt;
+            start_inv_pkt_2 = start_inv_2(1:2)./start_inv_2(3);
+
+            ziel_inv_1 = homographie_matrix1*start_pkt;
+            ziel_inv_pkt_1 = ziel_inv_1(1:2)./ziel_inv_1(3);
+
+            ziel_inv_2 = homographie_matrix2*start_pkt;
+            ziel_inv_pkt_2 = ziel_inv_2(1:2)./ziel_inv_2(3);
+
+            s = start(h,:)';
+            z = ziel(h,:)';
+
+            teil1_1(h,:) = (s - start_inv_pkt_1).^2; %richtig?
+            teil2_1(h,:) = (z - ziel_inv_pkt_1).^2;
+            fehler1 = sqrt(teil1_1 + teil2_1);
+
+            teil1_2(h,:) = (s - start_inv_pkt_2).^2; %richtig?
+            teil2_2(h,:) = (z - ziel_inv_pkt_2).^2;
+            fehler2 = sqrt(teil1_2 + teil2_2);
+
+        end
+    
+        %Fehler nach Verbesserung der Cluster
+        homo_fehler(:,2) = (fehler1(:,1) + fehler1(:,2))./2; %FÜR ALLE
+        homo_fehler(:,3) = (fehler2(:,1) + fehler2(:,2))./2;
+
+        %Zuweisen eines Cluster Label------------------------------------------
+    
+        %AUSREIßER BESIMMEN UND AUSSORTIEREN NACH GUBBS---------------------
+        %sortieren
+        fehler1 = homo_fehler1; %Optimierung der Fehler der einzelnen Cluster
+        fehler2 = homo_fehler2;
+       
+        %Median insgesamt
+        m1 = median(fehler1);
+        m2 = median(fehler2);
+       
+        %Median obere und untere Hälfte
+        m1_oben = fehler1(fehler1(:,1) > m1, :);
+        m1_unten = fehler1(fehler1(:,1) < m1, :);
+       
+        m2_oben = fehler2(fehler2(:,1) > m2, :);
+        m2_unten = fehler2(fehler2(:,1) < m2, :);
+       
+        median_m1oben = median(m1_oben);
+        median_m1unten = median(m1_unten);
+       
+        median_m2oben = median(m2_oben);
+        median_m2unten = median(m2_unten);
+       
+        %Interquartilsabstand
+        d1 = median_m1oben - median_m1unten;
+       
+        d2 = median_m2oben - median_m2unten;
+       
+        %Innere Zäune
+        %{
+        z1_obeni = median_m1oben + d1*1.5
+        z1_unteni = median_m1unten - d1*1.5
+       
+        z2_obeni = median_m2oben + d2*1.5
+        z2_unteni = median_m2unten - d2*1.5
+        %}
+       
+        z1_oben_save = z1_oben;
+        z2_oben_save = z2_oben;
+
+        %äußere Zäune
+        z1_oben = median_m1oben + d1*filter1
+        %z1_unten = median_m1unten - d1*3
+       
+        z2_oben = median_m2oben + d2*filter2
+        %z2_unten = median_m2unten - d2*3
+       
+
+         %Anders als initiale Clustereinteilung! 
+         for row = 1:rows   
+           %Für Cluster 1
+           if input_daten(row, 4) > z1_oben %andere Werte können durch einen Ausreißer hoch gezogen werden! Ab wann ist es ein Ausreißer??
+               input_daten(row, 1) = 2;
+           end
+
+           %Für Cluster 2
+           if input_daten(row, 4) > z2_oben %andere Werte können durch einen Ausreißer hoch gezogen werden! Ab wann ist es ein Ausreißer??
+               input_daten(row, 1) = 1;
+           end
+
+         end
+    
+        %homof = homo_fehler
+        %input_daten(:,1) = homo_fehler(:, 1);
+        homo_fehler(:, 1) = input_daten(:, 1); 
+        vektor_daten(:,1) = input_daten(:, 1); 
+
+        %Bedingung, dass der Fehler durchschnittlich größer als bestimmter
+        %Wert
+
+        %Wenn sich z1_oben nicht mehr ändert, f anpassen
+        %wenn sich z2_oben nicht ändert, dann auch!
+        %unterschiedliche Anpassung?
+        if z1_oben == z1_oben_save && filter1>1
+            filter1 = filter1- 0.05;
+        end
+
+        if z2_oben == z2_oben_save && filter2>1
+            filter2 = filter2- 0.05;
+        end
+    
+    
     end
     
-    %Zuweisen eines Cluster Label------------------------------------------
-    for row = 1:rows 
-       
-       %pf1 = (p(row, 1).^m) * homo_fehler(row, 2)
-       %pf2 = (p(row, 2).^m) * homo_fehler(row, 3)
-       
-       
-       if (p(row, 1).^m) * homo_fehler(row, 2) < (p(row, 2).^m) * homo_fehler(row, 3) 
-           homo_fehler(row, 1) = 1;
-       else
-           homo_fehler(row, 1) = 2;
-       end
-        
-    end
-    homof = homo_fehler
-    input_daten(:,1) = homo_fehler(:, 1);
-    vektor_daten(:,1) = homo_fehler(:, 1);
-
-    %Daten holen und Clusterzentren neu berechnen--------------------------
-    %clustering_daten = [distances(:, 1), input_daten];
     clustering_daten = input_daten; %Ausgangsdaten (Vektoren) mit index
     
     cluster1 = clustering_daten(clustering_daten(:,1) == 1, :); %alle Zeilen, wo clustering_daten == 1
     cluster2 = clustering_daten(clustering_daten(:,1) == 2, :);
-       
-    %######################################################################
-    %Cluster Wahrscheinlichkeit berechnen----------------------------------
-    
-    ones_p = ones(rows,1);
-    %Wahrscheilichkeiten für jeden Punkt und jedes Cluster -- Homographie
-    homo_cluster1 = homo_fehler(:,2)
-    homo_cluster2 = homo_fehler(:,3)
-    
-    homo_p1 = ones_p./((homo_cluster1./homo_cluster1).^(2/(m-1)) + (homo_cluster1./homo_cluster2).^(2/(m-1)));
-    homo_p2 = ones_p./((homo_cluster2./homo_cluster1).^(2/(m-1)) + (homo_cluster2./homo_cluster2).^(2/(m-1)));
-    
-    p_save = p;
-    p = [homo_p1 homo_p2];
-
-    end
-    
-    %distances(:, 1) == Label
-    % p enthält wahrscheinlichkeit für [cluster1 , cluster2]
-    %clustering_daten_out = [distances(:, 1), input_daten, p];
-    
-    %label, index, vektoren_x, vektoren_y, wahrscheinlichkeiten
-    %clustering_daten_out = [distances, input_daten, p];
     
 end
 

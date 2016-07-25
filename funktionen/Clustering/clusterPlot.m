@@ -4,12 +4,15 @@ function [ ] = clusterPlot( cluster1, cluster2 , cluster_zentrum, name_figure )
 
 figure('name', name_figure);
 
-scatter(cluster1(:,2), cluster1(:,3), 50,[0 0 1]);
+scatter(cluster1(:,2), cluster1(:,3), 50,[1 0 0]);
 hold on
-scatter(cluster2(:,2), cluster2(:,3), 50,[1 0 0]);
+scatter(cluster2(:,2), cluster2(:,3), 50,[0 0 1]);
+
+title(name_figure)
+%legend('Cluster 1','Cluster 2');
 
 
-legend('Cluster 1','Cluster 2');
+
 
 
 %{

@@ -1,45 +1,46 @@
-function [ cluster1, cluster2, cluster_zentrum] = fuzzyCmeans_homo_abstand( vorclustering_komplett, vektoren_2D, numCluster)
+function [ cluster1, cluster2, cluster_zentrum, p_homo, p_abstand] = fuzzyCmeans_homo_abstand( cluster_input, vektoren, clusterZentrum, p_fuzzy, numCluster)
+%cluster_input, vektoren_2D,fuzzy_clusterZentrum1frame, p_fuzzy, 2
 
     %projektion_start := label, x_vektoren, y_vektoren
-    vektor_daten = [vorclustering_komplett(:,1),vorclustering_komplett(:,5:6)] %Datenwerte der zu clusternden Vektoren
+    vektor_daten = [cluster_input(:,1),vektoren]; %Datenwerte der zu clusternden Vektoren
     
     %projektion_start := label, projektion_daten_x, projektion_daten_y
-    projektion_start = [vorclustering_komplett(:,1), vorclustering_komplett(:,9:10)];
+    projektion = [cluster_input(:,1), cluster_input(:,2:3)];
     
     %Input Daten Größe
     input_size = size(vektor_daten); %input = column Vektor
     rows = input_size(1);
 
     %Erste initialisierung Clustering--------------------------------------
-    cluster_zentrum = zeros(2,2); 
+    cluster_zentrum = clusterZentrum; 
         
     %speichern der Clusterdaten: [label, indices , Abstände zu Cluster 1 , Abstände zu Cluster 2, Homographie Fehler 1, Homographie Fehler 2];
     r = 1:rows;
     parameter = [zeros(rows,1), r', zeros(rows,1) , zeros(rows,1), zeros(rows,1) , zeros(rows,1)];
     
     %abstand:= label, abstand_cluster1, abstand_cluster2
-    abstand = [vorclustering_komplett(:,1), vorclustering_komplett(:,2:3)];
+    %abstand = [vorclustering_komplett(:,1), vorclustering_komplett(:,2:3)];
     
     %abstand:= fehler_cluster1, fehler_cluster2
-    homo_fehler = [vorclustering_komplett(:,1), zeros(rows,1) , zeros(rows,1)];
+    homo_fehler = [cluster_input(:,1), zeros(rows,1) , zeros(rows,1)];
     
     %Erste initialisierung Wahrscheinlichkeiten
     %Wahrscheinlichkeit für die Abstände wird initial aus dem Vorclustering entnommen
-    p_abstand = vorclustering_komplett(:,7:8); %p_abstand_cluster1, p_abstand_cluster2
+    p_abstand = p_fuzzy; %p_abstand_cluster1, p_abstand_cluster2
     p_abstand_save = zeros(rows,2); %2=Anzahl Cluster
     
-    p_homo = zeros(rows, 2); %2=Anzahl Cluster, hier random...
+    p_homo = rand(rows, 2); %2=Anzahl Cluster, hier random...
     p_homo_save = zeros(rows,2); %2=Anzahl Cluster
 
     %fuzzy Parameter/ Gewichtung.. fuzzyness Parameter, Standard 2
-    m_abstand = 2; 
-    m_homo = 2; 
+    m_abstand = 1.8; 
+    m_homo = 2.0; 
     
     %START DES CLUSTERINGS-------------------------------------------------
     %so lange, bis sich das Clusterzentrum nicht mehr ändert...
     %...keine Datenpunkte mehr dazu kommen und daher keien Neuberechnung
     %while abs(max(sum(p_abstand-p_abstand_save))) > 0.01 %Differenz Wahrscheinlichkeiten kleiner als epsilon
-    for i = 1:2
+    for i = 1:4
     
     p_diff_abstand = abs(max(sum(p_abstand-p_abstand_save)))
     p_diff_homo = abs(max(sum(p_homo-p_homo_save)))
@@ -56,31 +57,20 @@ function [ cluster1, cluster2, cluster_zentrum] = fuzzyCmeans_homo_abstand( vorc
     %Beim Plot oder der Berechnung etwas falsch?!
     %p1 = (p_abstand(:,1).^m_abstand + p_homo(:,1).^m_homo)./2;
     %p2 = (p_abstand(:,2).^m_abstand + p_homo(:,2).^m_homo)./2;
-    
-    %Unabhängige Ereignisse
-    p1 = p_abstand(:,1).^m_abstand + p_homo(:,1).^m_homo;
-    p2 = p_abstand(:,2).^m_abstand + p_homo(:,2).^m_homo;
+
     
     %Ereignisse können auch gleichzeitig eintreten
     %p1 = (p_abstand(:,1).^m_abstand + p_homo(:,1).^m_homo) - (p_abstand(:,1).^m_abstand .* p_homo(:,1).^m_homo);
     %p2 =  (p_abstand(:,2).^m_abstand + p_homo(:,2).^m_homo) - (p_abstand(:,2).^m_abstand .* p_homo(:,2).^m_homo);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    sum_p1 = sum(p1); %Wahrscheinlichkeiten Cluster 1
-    sum_p2 = sum(p2); %Wahrscheinlichkeiten Cluster 2
-    
-    zentrum1 = [sum(vektor_daten(:,2).*p1)/sum_p1 , sum(vektor_daten(:,3).*p1)/sum_p1];
-    zentrum2 = [sum(vektor_daten(:,2).*p2)/sum_p2 , sum(vektor_daten(:,3).*p2)/sum_p2];
-    
-    cluster_zentrum = [zentrum1; zentrum2]   
-
     %Abstand aller Datenpunkte zu Clusterzentren---------------------------
     %clusterzentrum auf 2 hard gecoded, sonst weitere loop
     
     for row = 1:rows
         %Abstände zu Clusterzentren berechnen (Vektoren)
-        abstand(row, 2) = sum((vektor_daten(row,2:3) - cluster_zentrum(1, :)).^2); %Euklidischer Abstand zu Zentrum 1, gewichtet
-        abstand(row, 3) = sum((vektor_daten(row,2:3) - cluster_zentrum(2, :)).^2); %Euklidischer Abstand zu Zentrum 2, gewichtet
+        abstand(row, 2) = sum((projektion(row,2:3) - cluster_zentrum(1, :)).^2); %Euklidischer Abstand zu Zentrum 1, gewichtet
+        abstand(row, 3) = sum((projektion(row,2:3) - cluster_zentrum(2, :)).^2); %Euklidischer Abstand zu Zentrum 2, gewichtet
         
     end
 
@@ -88,8 +78,8 @@ function [ cluster1, cluster2, cluster_zentrum] = fuzzyCmeans_homo_abstand( vorc
     
     %Homographie-Matrizen und Fehler der jeweiligen Cluster einzeln
     %Fehlerwerte nur für direkten Cluster/jedes Cluster einzeln
-    start1 = projektion_start(projektion_start(:,1) == 1, 2:3);
-    start2 = projektion_start(projektion_start(:,1) == 2, 2:3);
+    start1 = projektion(projektion(:,1) == 1, 2:3);
+    start2 = projektion(projektion(:,1) == 2, 2:3);
     
     vektoren1 = vektor_daten(vektor_daten(:,1) == 1, 2:3);
     vektoren2 = vektor_daten(vektor_daten(:,1) == 2, 2:3);
@@ -110,7 +100,7 @@ function [ cluster1, cluster2, cluster_zentrum] = fuzzyCmeans_homo_abstand( vorc
     homographie_invers1 = inv(homographie_matrix1);
     homographie_invers2 = inv(homographie_matrix2);
     
-    start = projektion_start(:,2:3);
+    start = projektion(:,2:3);
     ziel = start + vektor_daten(:,2:3);
     
     for h = 1:rows
@@ -152,8 +142,8 @@ function [ cluster1, cluster2, cluster_zentrum] = fuzzyCmeans_homo_abstand( vorc
        p_homo1 = (p_homo(row, 1).^m_homo) * homo_fehler(row, 2); %Optimierung Homographie-Fehler, min 0
        p_homo2 = (p_homo(row, 2).^m_homo) * homo_fehler(row, 3);
        
-       %if (p_abstand1 + p_homo1)/2 < (p_abstand2 + p_homo2)/2
-       if (p_abstand1 + p_homo1) < (p_abstand2 + p_homo2)
+       if p_abstand1 < p_abstand2
+       %if (p_abstand1 + p_homo1) < (p_abstand2 + p_homo2)
            parameter(row, 1) = 1;
        else
            parameter(row, 1) = 2;
@@ -166,7 +156,7 @@ function [ cluster1, cluster2, cluster_zentrum] = fuzzyCmeans_homo_abstand( vorc
     
     %Daten holen und Clusterzentren neu berechnen--------------------------
     %distances(:, 1) == Label
-    clustering_daten = [parameter(:, 1), vektor_daten(:,2:3)];
+    clustering_daten = [parameter(:, 1), projektion(:,2:3)];
     
     cluster1 = clustering_daten(clustering_daten(:,1) == 1,:); %alle Zeilen, wo clustering_daten == 1
     cluster2 = clustering_daten(clustering_daten(:,1) == 2,:);
@@ -174,7 +164,7 @@ function [ cluster1, cluster2, cluster_zentrum] = fuzzyCmeans_homo_abstand( vorc
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %UPDATE CLUSTER-LABEL -- MUSS?!
     vektor_daten(:,1) = parameter(:, 1);
-    projektion_start(:,1) = parameter(:, 1);
+    projektion(:,1) = parameter(:, 1);
     abstand(:,1) = parameter(:, 1);
     homo_fehler(:,1) = parameter(:, 1);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -211,6 +201,22 @@ function [ cluster1, cluster2, cluster_zentrum] = fuzzyCmeans_homo_abstand( vorc
 
     p_abstand = [dist_p1 dist_p2];
     p_homo = [homo_p1 homo_p2]
+    
+    %Clusterzentrum neu berechnen
+    
+    %Unabhängige Ereignisse
+    p1 = p_abstand(:,1).^m_abstand + p_homo(:,1).^m_homo;
+    p2 = p_abstand(:,2).^m_abstand + p_homo(:,2).^m_homo;  
+    %p1 = p_abstand(:,1).^m_abstand;
+    %p2 = p_abstand(:,2).^m_abstand;
+
+    sum_p1 = sum(p1); %Wahrscheinlichkeiten Cluster 1
+    sum_p2 = sum(p2); %Wahrscheinlichkeiten Cluster 2
+    
+    zentrum1 = [sum(projektion(:,2).*p1)/sum_p1 , sum(projektion(:,3).*p1)/sum_p1];
+    zentrum2 = [sum(projektion(:,2).*p2)/sum_p2 , sum(projektion(:,3).*p2)/sum_p2];
+    
+    cluster_zentrum = [zentrum1; zentrum2]  
 
     end
     

@@ -13,7 +13,7 @@ function [ projektion ] = Data3D_Projektion(daten_csv, fx, fy, principal_point)
     
     %projektion = input_daten * Projektions_matrix
     projektion_save = Projektions_matrix * input_daten';
-    projektion = projektion_save(1:2, :);
+    projektion = projektion_save(1:2, :)';
     
 
 end

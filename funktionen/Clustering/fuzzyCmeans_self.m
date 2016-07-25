@@ -1,4 +1,4 @@
-function [ cluster1, cluster2, clustering_daten_out, cluster_zentrum] = fuzzyCmeans_self( input_daten, numCluster )
+function [ cluster1, cluster2, cluster_zentrum, p_fuzzy] = fuzzyCmeans_self( input_daten, numCluster )
     
     %Input Daten Größe
     input_size = size(input_daten); %input = column Vektor
@@ -12,9 +12,11 @@ function [ cluster1, cluster2, clustering_daten_out, cluster_zentrum] = fuzzyCme
     distances = [zeros(rows,1), r', zeros(rows,1) , zeros(rows,1)];
     
     %Erste initialisierung Wahrscheinlichkeit
+    rng('default');
+    rng(7);
     p = rand(rows, 2); %2=Anzahl Cluster, hier random...
     p_save = zeros(rows,2); %2=Anzahl Cluster
-    m = 2; %fuzzy Parameter/ Gewichtung.. fuzzyness Parameter, Standard 2
+    m = 2.0; %fuzzy Parameter/ Gewichtung.. fuzzyness Parameter, Standard 2
     
     %START DES CLUSTERINGS-------------------------------------------------
     %so lange, bis sich das Clusterzentrum nicht mehr ändert...
@@ -33,7 +35,7 @@ function [ cluster1, cluster2, clustering_daten_out, cluster_zentrum] = fuzzyCme
     zentrum1 = [sum(input_daten(:,1).*(p(:,1).^m))/sum_p1 , sum(input_daten(:,2).*(p(:,1).^m))/sum_p1];
     zentrum2 = [sum(input_daten(:,1).*(p(:,2).^m))/sum_p2 , sum(input_daten(:,2).*(p(:,2).^m))/sum_p2];
     
-    cluster_zentrum = [zentrum1; zentrum2]   
+    cluster_zentrum = [zentrum1; zentrum2];   
     
     %Abstand aller Datenpunkte zu Clusterzentren---------------------------
     %clusterzentrum auf 2 hard gecoded, sonst weitere loop
@@ -96,7 +98,7 @@ function [ cluster1, cluster2, clustering_daten_out, cluster_zentrum] = fuzzyCme
     %clustering_daten_out = [distances(:, 1), input_daten, p];
     
     %label, index, vektoren_x, vektoren_y, wahrscheinlichkeiten
-    clustering_daten_out = [distances, input_daten, p];
+    %clustering_daten_out = [distances, input_daten, p];
     
 end
 

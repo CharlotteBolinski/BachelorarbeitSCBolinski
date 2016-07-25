@@ -47,7 +47,7 @@ daten_punkte = start_s(1);
 
 Punktmatrix = zeros(daten_punkte, 8);
 
-homographie_fehler_tmp = zeros(daten_punkte,1);
+%homographie_fehler_tmp = zeros(daten_punkte,1);
 %Zielmatrix = zeros(daten_punkte*2,1);
 %Punktmatrix = zeros(daten_punkte*2,8)
 
@@ -90,25 +90,46 @@ homographie_invers = inv(homographie_matrix);
 for h = 1:daten_punkte
     start_pkt = [start(h,:), 1]';
     ziel_pkt = [ziel(h,:), 1]';
-
+    
     %homo_start = homographie_invers*ziel_pkt;
     %homo_ziel = homographie_matrix*start_pkt;
     %homo_start = start_pkt - homographie_invers*ziel_pkt
     %homo_ziel = ziel_pkt - homographie_matrix*start_pkt
-
-    teil1(h,:) = abs(start_pkt - homographie_invers*ziel_pkt).^2; %richtig?
-    teil2(h,:) = abs(ziel_pkt - homographie_matrix*start_pkt).^2;
-    fehler = teil1 + teil2;
+    
+    start_inv = homographie_invers*ziel_pkt;
+    start_inv_pkt = start_inv(1:2)./start_inv(3);
+    
+    ziel_inv = homographie_matrix*start_pkt;
+    ziel_inv_pkt = ziel_inv(1:2)./ziel_inv(3);
+    
+    s = start(h,:)';
+    z = ziel(h,:)';
+    
+    teil1(h,:) = (s - start_inv_pkt).^2; %richtig?
+    teil2(h,:) = (z - ziel_inv_pkt).^2;
+    fehler_tmp = sqrt(teil1 + teil2);
 end
 
+%fehler normieren, Werte werden Null, wenn Abweichung erst bei 0.1e-10 anfängt
+fehler = (fehler_tmp(:,1) + fehler_tmp(:,2))./2;
+fehler(fehler<0.1e-10) = 0;
+
+
+%{
+size_f = size(fehler);
+rows_f = size_f(1);
+rf = 1:rows_f;
+figure('name','test plot homo fehler');
+plot(rf, fehler(:,1), 'r', rf, fehler(:,2), 'b');
+%}
 
 %Hp-q Homographie-Fehler für jeden Punkt!
 %disp(fehler);
-for i = 1:daten_punkte
-    homographie_fehler_tmp(i) = sum(fehler(i,:)/3);
-end
+%for i = 1:daten_punkte
+%    homographie_fehler_tmp(i) = sum(fehler(i,:)/3);
+%end
 
-homographie_fehler = homographie_fehler_tmp;
+homographie_fehler = fehler;
 
 end
 
