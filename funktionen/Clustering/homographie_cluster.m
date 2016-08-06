@@ -112,7 +112,7 @@ end
 
 %fehler normieren, Werte werden Null, wenn Abweichung erst bei 0.1e-10 anfängt
 fehler = (fehler_tmp(:,1) + fehler_tmp(:,2))./2;
-fehler(fehler<0.1e-10) = 0;
+%fehler(fehler<0.1e-10) = 0;
 
 
 %{

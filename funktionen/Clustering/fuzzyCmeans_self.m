@@ -1,10 +1,12 @@
-function [ cluster1, cluster2, cluster_zentrum, p_fuzzy] = fuzzyCmeans_self( input_daten, numCluster )
+function [ cluster1, cluster2, vektoren1, vektoren2, cluster_zentrum, p_fuzzy] = fuzzyCmeans_self( input_daten, vektoren, numCluster )
     
     %Input Daten Größe
     input_size = size(input_daten); %input = column Vektor
     rows = input_size(1);
     
     %inputtt = input_daten
+    
+    vektor_daten = [zeros(rows,1), vektoren];
     
     %Erste initialisierung Clustering--------------------------------------
     %speichern der Clusterdaten: [label, indices , Abstände zu Cluster 1 , Abstände zu Cluster 2];
@@ -42,8 +44,8 @@ function [ cluster1, cluster2, cluster_zentrum, p_fuzzy] = fuzzyCmeans_self( inp
     for row = 1:rows
         
        %Abstände zu Clusterzentren berechnen 
-       distances(row, 3) = sum((input_daten(row,:) - cluster_zentrum(1, :)).^2); %Euklidischer Abstand zu Zentrum 1, gewichtet
-       distances(row, 4) = sum((input_daten(row,:) - cluster_zentrum(2, :)).^2); %Euklidischer Abstand zu Zentrum 2, gewichtet
+       distances(row, 3) = sum((input_daten(row,1:2) - cluster_zentrum(1, :)).^2); %Euklidischer Abstand zu Zentrum 1, gewichtet
+       distances(row, 4) = sum((input_daten(row,1:2) - cluster_zentrum(2, :)).^2); %Euklidischer Abstand zu Zentrum 2, gewichtet
        
        %Zuweisen eines Cluster Label
        if (p(row, 1).^m) * distances(row, 3) < (p(row, 2).^m) * distances(row, 4) 
@@ -61,7 +63,12 @@ function [ cluster1, cluster2, cluster_zentrum, p_fuzzy] = fuzzyCmeans_self( inp
     
     cluster1 = clustering_daten(clustering_daten(:,1) == 1,:); %alle Zeilen, wo clustering_daten == 1
     cluster2 = clustering_daten(clustering_daten(:,1) == 2,:);
-       
+    
+    %vektoren mit clustern
+    vektor_daten = [distances(:, 1), vektoren];
+    
+    vektoren1 = vektor_daten(vektor_daten(:,1) == 1,:);
+    vektoren2 = vektor_daten(vektor_daten(:,1) == 2,:);
     %######################################################################
     %Cluster Wahrscheinlichkeit berechnen----------------------------------
     

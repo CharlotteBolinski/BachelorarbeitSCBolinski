@@ -6,6 +6,7 @@ size_p = size(p);
 rows_p = size_p(1);
 r_p = 1:rows_p;
 
+%{
 %einzeln
 figure('name', titel1);
 plot(r_p, p(:,2), 'b');
@@ -18,13 +19,13 @@ plot(r_p, p(:,1), 'r');
 title(titel2);
 xlabel(x_name);
 ylabel(y_name);
+%}
 
 %zusammen
-%{
 figure('name', 'Wahrscheinlichkeiten zusammen');
 plot(r_p, p(:,1), 'r', r_p, p(:,2), 'b');
 title('Wahrscheinlichkeit Fuzzy C-means')
-%}
+
 
 end
 

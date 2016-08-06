@@ -1,6 +1,19 @@
 function [ projektion ] = Data3D_Projektion(daten_csv, fx, fy, principal_point)
-%Berechnen der 2D-Projektion der 3D-Daten
+%Berechnung der Drehachse durch den Ebenenmittelpunkt.
+%
+%INPUT:
+%
+%   daten_csv           =   dreidimensionale Input Daten, 3xn
+%   fx                  =   Brennweite x-Richtung
+%   fy                  =   Brennweite y-Richtung
+%   principal_point     =   Bildmittelpunkt
+%
+%OUTPUT:
+%
+%   projektion   = Daten, die in 2D Raum projeziert wurden, 2xn
+%
 %Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
+
     input_daten = csvread(daten_csv);
     %input_daten = random_werte;
 

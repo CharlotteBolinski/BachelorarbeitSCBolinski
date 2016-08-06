@@ -12,8 +12,8 @@ figure('name', 'Parallele Bewegung');
 
 %Ebenen erzeugen
 %[ x y z Random_werte_A] = ebene3D_scatter( -2,2,-2,2,'z',20,[1 0 0]);
-[ x y z Random_werte_A] = ebene3D_scatter( 2,4,2,4,'z',20,[1 0 0]);
-[ x2 y2 z2 Random_werte_B] = ebene3D_scatter( 6,8,6,8,'z',20,[0 0 1]);
+[ x y z Random_werte_A] = ebene3D_scatter( 2,4,2,4,'z',40,[1 0 0]);
+[ x2 y2 z2 Random_werte_B] = ebene3D_scatter( 6,8,6,8,'z',40,[0 0 1]);
 
 %drehachsen Mittelpunkt
 %drehachse_A = [3 3 0];

@@ -1,5 +1,24 @@
 function [ x,y,z,Random_werte] = ebene3D_scatter( von1, bis1, von2, bis2, zeroKomponente, anzahlRandom,color_array)
 %Funktion um Koordinaten einer Ebene im 3dimensionalen Raum festzulegen
+%
+%INPUT:
+%
+%   von1         =   Anfangspunkt der Ebene1
+%   bis1         =   Endpunkt der Ebene1
+%   von2         =   Anfangspunkt der Ebene1
+%   bis2         =   Endpunkt der Ebene1
+%   ebene_z         =   Matrix der z-Koordinaten der Ebene
+%   fx              =   Brennweite in x-Richtung
+%   fy              =   Brennweite in y-Richtung
+%   principal_point =   Bildmittelpunkt
+%
+%OUTPUT:
+%
+%   projektion   = projezierte Punkte der Ebene
+%
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
+
+
 %von: Anfangspunkt der Ebene
 %bis: Endpunkt der Ebene
 %Random Werte, die auf und in der Ebene liegen werden je nach Null-Komponente erzeugt

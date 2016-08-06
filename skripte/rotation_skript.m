@@ -12,16 +12,16 @@ figure('name', 'Rotation Bewegung');
 
 %Ebenen erzeugen
 %[ x y z Random_werte_A] = ebene3D_scatter( -2,2,-2,2,'z',20,[1 0 0]);
-[ x y z Random_werte_A] = ebene3D_scatter( 2,4,2,4,'z',20,[1 0 0]);
-[ x2 y2 z2 Random_werte_B] = ebene3D_scatter( 6,8,6,8,'z',20,[0 0 1]);
+[ x y z Random_werte_A] = ebene3D_scatter( 0,2,0,2,'z',60,[1 0 0]);
+[ x2 y2 z2 Random_werte_B] = ebene3D_scatter( 0,2,2,4,'z',60,[0 0 1]);
 
 %drehachsen Mittelpunkt
 %drehachse_A = [3 3 0];
 %rotation_punkt_A = [3 3 0]; %Mittelpunkt, hier manuell berechnet
 %rotation_punkt_B = [7 7 0]; %Mittelpunkt, hier manuell berechnet
 
-rotation_punkt_A = [0 0 0]; %Mittelpunkt, hier manuell berechnet
-rotation_punkt_B = [0 0 0]; %Mittelpunkt, hier manuell berechnet
+rotation_punkt_A = [1 2 0]; %Mittelpunkt, hier manuell berechnet
+rotation_punkt_B = [1 2 0]; %Mittelpunkt, hier manuell berechnet
 
 %drehachse_A_norm = drehachse_A./norm(drehachse_A);
 %norm(drehachse_A_norm)
@@ -35,9 +35,32 @@ rotation_punkt_B = [0 0 0]; %Mittelpunkt, hier manuell berechnet
 %Linearinterpolation
 %einzeln..egal weil unterschiedliche CSV die wieder bel. konkatiniert werden können
 %schreiben in eine csv
-[Random_werte_A x y z] = transformation_export(Random_werte_A, x, y, z,[1 0 0], 30, [0 1 0] ,rotation_punkt_A,[0 0 0], 'csv/rotation_A.csv');
-[Random_werte_B x2 y2 z2] = transformation_export(Random_werte_B, x2, y2, z2,[0 0 1], 30, [0 1 0],rotation_punkt_B ,[0 0 0], 'csv/rotation_B.csv');
+%transformation_export( input_werte_matrix, xEbene, yEbene, zEbene,color_array, winkel, rotation_achse, rotation_punkt, translation_punkt, CSV_name)
+[Random_werte_A x y z, ebene1_alle] = transformation_export(Random_werte_A, x, y, z,[1 0 0], 30, [0 1 0] ,rotation_punkt_A,[0 0 0], 'csv/rotation_A.csv');
+[Random_werte_B x2 y2 z2, ebene2_alle] = transformation_export(Random_werte_B, x2, y2, z2,[0 0 1], -30, [0 1 0],rotation_punkt_B ,[0 0 0], 'csv/rotation_B.csv');
 
+%Video Framebilder erzeugen
+%1. Ebenenkoordinaten auslesen + plot
+%{
+figure('name', 'Frame Bild');
+x_plot1 = ebene1_alle(1:2, 1:2);
+y_plot1 = ebene1_alle(1:2, 3:4);
+z_plot1 = ebene1_alle(1:2, 5:6);
+surf(x_plot1, y_plot1, z_plot1);
+set(surface,'FaceColor',[1 0 0],'FaceAlpha',0.2);
+
+x_plot2 = ebene2_alle(1:2, 1:2);
+y_plot2 = ebene2_alle(1:2, 3:4);
+z_plot2 = ebene2_alle(1:2, 5:6);
+surf(x_plot2, y_plot2, z_plot2);
+set(surface,'FaceColor',[0 0 1],'FaceAlpha',0.2);
+
+xlabel('x');
+ylabel('y');
+zlabel('z');
+
+%2. Daten zu der Ebene auslesen + plot
+%}
 
 %--> MUSS ANDERS BERECHNET WERDEN! WENN NUR 1 FRAME KEINE FUNKTIONALITÄT!
 %Projektion

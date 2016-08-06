@@ -1,4 +1,4 @@
-function [ Transform_save, x,y,z ] = transformation_export( input_werte_matrix, xEbene, yEbene, zEbene,color_array, winkel, rotation_achse, rotation_punkt, translation_punkt, CSV_name)
+function [ Transform_save, x,y,z, ebene_save ] = transformation_export( input_werte_matrix, xEbene, yEbene, zEbene,color_array, winkel, rotation_achse, rotation_punkt, translation_punkt, CSV_name)
 %CSV Datei erzeugen, für die die Transformation von einem Anfangspunkt zu
 %einem Endpunkt durchgeführt wird.
 %25 Frames pro Sekunde werden angenommen.
@@ -21,7 +21,10 @@ sekunden = 1;
 winkel_frame = winkel/(sekunden*frames);
 translation_frame = translation_punkt/(sekunden*frames);
 
+%Transformation um eine Achse
 %transformation_matrix_schritt = transformation_matrix_calc(winkel_frame,rotation_achse,translation_frame);
+
+%Transformation um einen Punkt
 transformation_matrix_schritt = rotation_translation_matrix_calc(winkel_frame,rotation_achse,rotation_punkt, translation_frame);
 
 transform_frame = input_werte_matrix;
@@ -29,6 +32,7 @@ transform_frame = input_werte_matrix;
 x = xEbene;
 y = yEbene;
 z = zEbene;
+ebene_save = [];
 
 %---------------------------------------------------------------------------
 %3D-Daten erzeugen und in CSV schreiben
@@ -44,13 +48,17 @@ for s = 1:sekunden
         %schreibe in CSV
         dlmwrite(CSV_name, transform_frame, '-append');
         
+        %speichern Ebenendaten in MATRIX
+        ebene_aktuell = [x,y,z];
+        ebene_save = [ebene_save; ebene_aktuell];
+        
     end
 
 
 end
 
 
-title('Bewegung 2er Ebenen, 2 Frames');
+title('Bewegung 2er Ebenen, 5 Frames');
 %Speichern des letzen Ergebnisses für weitere Transformationen
 Transform_save = transform_frame;
 

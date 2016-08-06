@@ -1,4 +1,4 @@
-function [ xRot,yRot,zRot ] = transformEbene3D( xEbene,yEbene,zEbene,transformation_matrix,color_array)
+function [ xRot,yRot,zRot,surface] = transformEbene3D( xEbene,yEbene,zEbene,transformation_matrix,color_array)
 %Rotation der Ebenenrepräsentation in 3D seperat
 %Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 

@@ -10,6 +10,8 @@ function [ drehachse ] = drehachse_mittelpunkt( ebene_x, ebene_y, ebene_z )
 %OUTPUT:
 %
 %   drehachse   = Drehachse in Form eines Vektors 3x1
+%
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
 %Komponentenberechnung je nach Orientierung der Ebene anders????
 x1 = ebene_x(1,1)

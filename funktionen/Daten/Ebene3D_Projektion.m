@@ -1,5 +1,19 @@
 function [ projektion ] = Ebene3D_Projektion(ebene_x, ebene_y, ebene_z, fx, fy, principal_point)
 %Berechnen der 2D-Projektion der 3D-Ebene
+%
+%INPUT:
+%
+%   ebene_x         =   Matrix der x-Koordinaten der Ebene
+%   ebene_y         =   Matrix der y-Koordinaten der Ebene
+%   ebene_z         =   Matrix der z-Koordinaten der Ebene
+%   fx              =   Brennweite in x-Richtung
+%   fy              =   Brennweite in y-Richtung
+%   principal_point =   Bildmittelpunkt
+%
+%OUTPUT:
+%
+%   projektion   = projezierte Punkte der Ebene
+%
 %Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
     x = [ebene_x(1:2)'; ebene_x(3:4)'];
@@ -7,7 +21,6 @@ function [ projektion ] = Ebene3D_Projektion(ebene_x, ebene_y, ebene_z, fx, fy, 
     z = [ebene_z(1:2)'; ebene_z(3:4)'];
 
     input_daten = [x y z];
-    %input_daten = random_werte;
 
     X0 = principal_point(1);
     Y0 = principal_point(2);
@@ -29,9 +42,6 @@ function [ projektion ] = Ebene3D_Projektion(ebene_x, ebene_y, ebene_z, fx, fy, 
     %scatter(projektion(1,:), projektion(2,:));
     %hold on
     fill(x_poly, y_poly,'r', 'FaceAlpha',0.2) %gefülltes Polygon
-    
-    %alle Daten geht nicht, weil Daten von kompletter Projektion
-    %scatter(projektion_A(1,60:80), projektion_A(2,60:80));
     
 end
 
