@@ -24,7 +24,9 @@ ylabel(y_name);
 %zusammen
 figure('name', 'Wahrscheinlichkeiten zusammen');
 plot(r_p, p(:,1), 'r', r_p, p(:,2), 'b');
-title('Wahrscheinlichkeit Fuzzy C-means')
+xlabel('Werte sortiert nach Wahrescheinlichkeit')
+ylabel('Wahrescheinlichkeit')
+%title('Wahrscheinlichkeit Fuzzy C-means')
 
 
 end
