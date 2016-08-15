@@ -22,10 +22,10 @@ winkel_frame = winkel/(sekunden*frames);
 translation_frame = translation_punkt/(sekunden*frames);
 
 %Transformation um eine Achse
-%transformation_matrix_schritt = transformation_matrix_calc(winkel_frame,rotation_achse,translation_frame);
+transformation_matrix_schritt = transformation_matrix_calc(winkel_frame,rotation_achse,translation_frame);
 
 %Transformation um einen Punkt
-transformation_matrix_schritt = rotation_translation_matrix_calc(winkel_frame,rotation_achse,rotation_punkt, translation_frame);
+%transformation_matrix_schritt = rotation_translation_matrix_calc(winkel_frame,rotation_achse,rotation_punkt, translation_frame);
 
 transform_frame = input_werte_matrix;
 
@@ -58,7 +58,7 @@ for s = 1:sekunden
 end
 
 
-title('Bewegung 2er Ebenen, 5 Frames');
+%title('Bewegung 2er Ebenen, 5 Frames');
 %Speichern des letzen Ergebnisses für weitere Transformationen
 Transform_save = transform_frame;
 

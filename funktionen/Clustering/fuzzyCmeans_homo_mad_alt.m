@@ -1,4 +1,4 @@
-function [ cluster1, cluster2, homographie_sort, homographie_daten] = fuzzyCmeans_homo_mad_norm( cluster_input, vektoren, numCluster)
+function [ cluster1, cluster2, homographie_sort, homographie_daten] = fuzzyCmeans_homo_mad( cluster_input, vektoren, numCluster)
     
     %Input Daten Größe
     input_size = size(cluster_input); %input = column Vektor
@@ -7,7 +7,7 @@ function [ cluster1, cluster2, homographie_sort, homographie_daten] = fuzzyCmean
     %cluster_input = label, wertx, werty
     input_daten = [cluster_input(:,1:3), vektoren(:,2:4), zeros(rows,1)]; %label, cluster_daten 1. Frame == Projektionsdaten 1. Frame, zeros = Indizes  
 
-    %schwellwert_mad = 1.5;
+    schwellwert_mad = 1.5;
     
     mean_ohne = ones(1,3);
     mean_save = ones(1,3);
@@ -42,7 +42,7 @@ for i = 1:2 %Test
     
     h1_init = [homo_fehler1, hf12_init];
     h2_init = [hf22_init, homo_fehler2];
-    homographie_init = [h1_init; h2_init];
+    homographie_init = [h1_init; h2_init]
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Plot der HOMOGRAPHIE FEHLER pro Cluster aller Werte ohne Aussortieren
@@ -67,11 +67,10 @@ for i = 1:2 %Test
     m_i_cl2 = abs(cl2_diff./mad_cl2);
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
+    %{
     mi1_sort = sortrows(m_i_cl1);
     mi2_sort = sortrows(m_i_cl2);
     
-    %{
     grenz1 = mi1_sort(50)
     grenz2 = mi2_sort(50)
     
@@ -84,32 +83,27 @@ for i = 1:2 %Test
     %grenz1 = m_i_cl1(10)
     %grenz2 = m_i_cl2(10)
     %}
-    
-    %Schwellwert für jedes Cluster dynamisch gesetzt
-    schwellwert_mad1 = mi1_sort(2)
-    schwellwert_mad2 = mi2_sort(2)
-    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     cluster1_tmp = [cluster1_daten, m_i_cl1];
     cluster2_tmp = [cluster2_daten, m_i_cl2];
     
     %Cluster ohne Ausreißer------------------------------------------------
-    cluster1_ohne = cluster1_tmp(cluster1_tmp(:,7) < schwellwert_mad1, 1:3); %vielleicht geht das nicht 
-    cluster2_ohne = cluster2_tmp(cluster2_tmp(:,7) < schwellwert_mad2, 1:3);
+    cluster1_ohne = cluster1_tmp(cluster1_tmp(:,7) < schwellwert_mad, 1:3); %vielleicht geht das nicht 
+    cluster2_ohne = cluster2_tmp(cluster2_tmp(:,7) < schwellwert_mad, 1:3);
     
     %Homographie ohne Ausreißer--------------------------------------------
-    size_cluster1_ohne = size(cluster1_ohne);
-    size_cluster2_ohne = size(cluster2_ohne);
+    size_cluster1_ohne = size(cluster1_ohne)
+    size_cluster2_ohne = size(cluster2_ohne)
     
     if size_cluster1_ohne(1) > 4
         start1_ohne = cluster1_ohne(:, 2:3);
-        vektoren1_ohne = cluster1_tmp(cluster1_tmp(:,7) < schwellwert_mad1, 4:5);
+        vektoren1_ohne = cluster1_tmp(cluster1_tmp(:,7) < schwellwert_mad, 4:5);
         ziel1_ohne =  start1_ohne + vektoren1_ohne;
         [homographie_matrix1_ohne, homo_fehler1_ohne] = homographie_cluster(start1_ohne, ziel1_ohne);
         
         %Fehler ohne Ausreißer mit Index zur Auswertung------------------------
-        index1_ohne = cluster1_tmp(cluster1_tmp(:,7) < schwellwert_mad1, 6);
+        index1_ohne = cluster1_tmp(cluster1_tmp(:,7) < schwellwert_mad, 6);
     else
         disp('Keine Werte für das 1. Cluster aussortiert');
         homographie_matrix1_ohne = homographie_matrix1;
@@ -117,12 +111,12 @@ for i = 1:2 %Test
     
     if size_cluster2_ohne(1) > 4
         start2_ohne = cluster2_ohne(:, 2:3);
-        vektoren2_ohne = cluster2_tmp(cluster2_tmp(:,7) < schwellwert_mad2, 4:5);
+        vektoren2_ohne = cluster2_tmp(cluster2_tmp(:,7) < schwellwert_mad, 4:5);
         ziel2_ohne =  start2_ohne + vektoren2_ohne;
         [homographie_matrix2_ohne, homo_fehler2_ohne] = homographie_cluster(start2_ohne, ziel2_ohne);
 
         %Fehler ohne Ausreißer mit Index zur Auswertung------------------------
-        index2_ohne = cluster2_tmp(cluster2_tmp(:,7) < schwellwert_mad2, 6);
+        index2_ohne = cluster2_tmp(cluster2_tmp(:,7) < schwellwert_mad, 6);
 
     else
         disp('Keine Werte für das 2. Cluster aussortiert');
@@ -150,10 +144,10 @@ for i = 1:2 %Test
     
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %show_h1ohne = homo1_ohne
-    %show_h2ohne = homo2_ohne
+    show_h1ohne = homo1_ohne
+    show_h2ohne = homo2_ohne
     
-    homo_ohne = [homo1_ohne; homo2_ohne];
+    homo_ohne = [homo1_ohne; homo2_ohne]
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Homographie Fehler falsch zugeordneter Werte , bekannt durch ground truth 
@@ -177,9 +171,9 @@ for i = 1:2 %Test
     %Berechnung des Homographie Fehlers der aussortierten Daten nach Schätzung der Homographie der nicht aussortierten Daten
     
     if ~isempty(homo1_ohne)
-        save1 = cluster1_tmp(cluster1_tmp(:,7) >= schwellwert_mad1, 1:3);
-        vektoren1_save = cluster1_tmp(cluster1_tmp(:,7) >= schwellwert_mad1, 4:5);
-        index1_save = cluster1_tmp(cluster1_tmp(:,7) >= schwellwert_mad1, 6);
+        save1 = cluster1_tmp(cluster1_tmp(:,7) >= schwellwert_mad, 1:3);
+        vektoren1_save = cluster1_tmp(cluster1_tmp(:,7) >= schwellwert_mad, 4:5);
+        index1_save = cluster1_tmp(cluster1_tmp(:,7) >= schwellwert_mad, 6);
         
         save_start1 = save1(:,2:3);
         save_ziel1 = save_start1 + vektoren1_save;
@@ -198,9 +192,9 @@ for i = 1:2 %Test
     end
     
     if ~isempty(homo2_ohne)
-        save2 = cluster2_tmp(cluster2_tmp(:,7) >= schwellwert_mad2, 1:3);
-        vektoren2_save = cluster2_tmp(cluster2_tmp(:,7) >= schwellwert_mad2, 4:5);
-        index2_save = cluster2_tmp(cluster2_tmp(:,7) >= schwellwert_mad2, 6);
+        save2 = cluster2_tmp(cluster2_tmp(:,7) >= schwellwert_mad, 1:3);
+        vektoren2_save = cluster2_tmp(cluster2_tmp(:,7) >= schwellwert_mad, 4:5);
+        index2_save = cluster2_tmp(cluster2_tmp(:,7) >= schwellwert_mad, 6);
         
         save_start2 = save2(:,2:3);
         save_ziel2 = save_start2 + vektoren2_save;
@@ -213,7 +207,7 @@ for i = 1:2 %Test
         homo2_save = [fehler2_save, index2_save];
         
     else
-        disp('Keine aussortierten Daten, Daten bleiben für 2. Cluster');
+        disp('Keine aussortierten Daten, Daten bleiben für 1. Cluster');
         index2_save = cluster2_tmp(:,6);
         homo2_save = [hf22_init, homo_fehler2, index2_save];
     end
@@ -280,8 +274,8 @@ homo2_plot = cluster2_fehler_index;
 homogFehlerPlot( homo1_plot, homo2_plot, 1, 2, 'Homographie Fehler, letztendliche Cluster ENTSCHEIDUNG' );
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%        
     
-cluster1 = [input_daten(input_daten(:,1) == 1, 1:3), input_daten(input_daten(:,1) == 1, 6)];
-cluster2 = [input_daten(input_daten(:,1) == 2, 1:3), input_daten(input_daten(:,1) == 2, 6)];
+cluster1 = input_daten(input_daten(:,1) == 1, 1:4);
+cluster2 = input_daten(input_daten(:,1) == 2, 1:4);
 
 end
 

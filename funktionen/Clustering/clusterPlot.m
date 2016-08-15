@@ -7,6 +7,7 @@ figure('name', name_figure);
 scatter(cluster1(:,2), cluster1(:,3), 50,[1 0 0]);
 hold on
 scatter(cluster2(:,2), cluster2(:,3), 50,[0 0 1]);
+ 
 
 %title(name_figure)
 %legend('Cluster 1','Cluster 2');
@@ -50,6 +51,7 @@ scatter(cluster_zentrum(2,1), cluster_zentrum(2,2), 50,[0 0 0], '+');
     
 hold off
 
+set(gca,'FontSize',14);
 xlabel('x');
 ylabel('y');
 

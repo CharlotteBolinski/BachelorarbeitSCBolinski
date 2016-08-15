@@ -27,8 +27,10 @@ function [ xRot,yRot,zRot,surface] = transformEbene3D( xEbene,yEbene,zEbene,tran
     hold on
     surface = surf(xRot, yRot, zRot);
     set(surface,'FaceColor',color_array,'FaceAlpha',0.2);
-
+    
     %hold off
+    
+    set(gca,'FontSize',18);
     
     xlabel('x');
     ylabel('y');

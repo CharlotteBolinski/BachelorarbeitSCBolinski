@@ -25,6 +25,7 @@ function [ output_args ] = homogFehlerPlot( fehler_cluster1, fehler_cluster2, so
             plot(rf2, hf_cluster2_sort(:,sort_column2), 'b');
         end
 
+        set(gca,'FontSize',18); 
         xlabel('Sortierte Fehlerwerte');
         ylabel('Fehler');
 
