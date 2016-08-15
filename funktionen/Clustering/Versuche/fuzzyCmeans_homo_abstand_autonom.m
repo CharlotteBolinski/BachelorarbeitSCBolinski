@@ -1,5 +1,8 @@
 function [ cluster1, cluster2, cluster_zentrum, p_homo, p_abstand] = fuzzyCmeans_homo_abstand_autonom( input, vektoren, numCluster )
-    
+%Kombination aus Fuzzy C-means und Homographie, Versuch
+%Ohne Vorclustering
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
+
     %Input Daten Größe
     input_size = size(input); %input = column Vektor
     rows = input_size(1);

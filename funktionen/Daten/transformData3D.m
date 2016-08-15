@@ -1,5 +1,17 @@
 function [ Transformation_werte, scatter] = transformData3D(random_werte,transformation_matrix)
 %Rotation in 3D um eine beliebige Achse
+%
+%INPUT:
+%
+%   random_werte            =   Random Werte auf der Ebene
+%   transformation_matrix   =   Matrix, die gewünschte Transformation ausführt
+%
+%OUTPUT:
+%
+%   Transformation_werte    =   transformierte Werte
+%   scatter                 =   Handle des Scatter Plots, Funktionen zur
+%                               Veränderung des Plots können auf dieser Variablen aufgerufen werden
+%
 %Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
     linkdata on

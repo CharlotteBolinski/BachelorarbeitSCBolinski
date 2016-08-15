@@ -1,4 +1,19 @@
 function [ fehler_homographie ] = homographie_fehler( homographie_matrix, start, ziel )
+%Funktion zum Berechnen des Homographie Fehlers aus übergebener
+%Homographiematrix
+%
+%INPUT:
+%
+%   homographie_matrix      =   Homographie Matrix gegenüber der der Fehler
+%                               berechnet werden soll
+%   start                   =   Startwerte der Punktkorrespondenzen
+%   ziel                    =   Zielwerte der Punktkorrespondenzen
+%
+%OUTPUT:
+%   
+%   fehler_homographie  =   Homographiefehler auf Basis der Input Daten
+%
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
 start_s = size(start);
 daten_punkte = start_s(1);

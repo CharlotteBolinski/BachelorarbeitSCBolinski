@@ -17,12 +17,6 @@ function [ x,y,z,Random_werte] = ebene3D_scatter( von1, bis1, von2, bis2, zeroKo
 %   projektion   = projezierte Punkte der Ebene
 %
 %Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
-
-
-%von: Anfangspunkt der Ebene
-%bis: Endpunkt der Ebene
-%Random Werte, die auf und in der Ebene liegen werden je nach Null-Komponente erzeugt
-%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
     
     %if von < bis %bei negativ?
     %if von > bis

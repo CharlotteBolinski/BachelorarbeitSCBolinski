@@ -1,5 +1,7 @@
 function [ cluster1, cluster2, cluster_zentrum] = fuzzyCmeans_homo( vorclustering_komplett, numCluster)
-    
+%Kombination aus Fuzzy C-means und Homographie, Versuch
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
+
     vektor_daten = [vorclustering_komplett(:,1),vorclustering_komplett(:,5:6)]
     size(vektor_daten)
     

@@ -1,5 +1,9 @@
 function [ cluster1, cluster2, homo_fehler] = fuzzyCmeans_homo_vor( p_fuzzy, cluster_input, vektoren, numCluster)
-    
+%Kombination aus Fuzzy C-means und Homographie, Versuch
+%Abstand und Homographie werden gleichzeitig optimiert
+%Vorclustering wird übergeben
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
+
     %Input Daten Größe
     input_size = size(cluster_input); %input = column Vektor
     rows = input_size(1);

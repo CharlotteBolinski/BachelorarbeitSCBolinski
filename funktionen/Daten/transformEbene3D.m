@@ -1,5 +1,22 @@
 function [ xRot,yRot,zRot,surface] = transformEbene3D( xEbene,yEbene,zEbene,transformation_matrix,color_array)
 %Rotation der Ebenenrepräsentation in 3D seperat
+%
+%INPUT:
+%
+%   xEbene                  =   Matrix der x-Koordinaten der Ebene
+%   yEbene                  =   Matrix der y-Koordinaten der Ebene
+%   zEbene                  =   Matrix der z-Koordinaten der Ebene
+%   transformation_matrix   =   Matrix, die gewünschte Transformation ausführt
+%   color_array             =   Farbarray der Form [R G B], Werte 0-1
+%
+%OUTPUT:
+%
+%   xRot        =   transformierte Matrix der x-Koordinaten der Ebene
+%   yRot        =   transformierte Matrix der y-Koordinaten der Ebene
+%   zRot        =   transformierte Matrix der z-Koordinaten der Ebene
+%   surface     =   Handle des Surface Plots, Funktionen zur
+%                   Veränderung des Plots können auf dieser Variablen aufgerufen werden
+%
 %Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
     linkdata on

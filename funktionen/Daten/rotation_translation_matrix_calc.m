@@ -1,8 +1,20 @@
-function [ M ] = rotation_translation_matrix_calc( rotation_winkel,rotation_achse, rotation_punkt, translation)
+function [ M ] = rotation_translation_matrix_calc( rotation_winkel,rotation_achse, rotation_punkt)
 %Matrix für Starrkörpertransformation berechnen um diese Matrix flexibler
 %Einsetzbar zu machen
+%
+%INPUT:
+%
+%   rotation_winkel         =   Winkel um den rotiert werden soll
+%   rotation_achse          =   Rotationsachse, 3x1 Vektor
+%   rotation_punkt          =   Punkt um den rotiert werden soll
+%
+%OUTPUT:
+%
+%   M   = Transformationsmatrix M
+%
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
-        %Rotationswinkel in Rad umrechnen
+    %Rotationswinkel in Rad umrechnen
     theta = deg2rad(rotation_winkel);
 
     %Achsen-Vektor Normierung

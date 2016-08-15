@@ -1,5 +1,8 @@
 function [ cluster1, cluster2, cluster_zentrum, p] = fuzzyCmeans_homo_pur_pur( input, vektoren, numCluster )
-    
+%Kombination aus Fuzzy C-means und Homographie, Versuch
+%Nutzen nur von Homographie Information für das Clustering
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
+
     %Input Daten Größe
     input_size = size(input); %input = column Vektor
     rows = input_size(1);

@@ -1,6 +1,20 @@
 %function [ output_args ] = clusterPlot( cluster_daten, cluster_zentrum, name_figure )
 function [ ] = clusterPlot( cluster1, cluster2 , cluster_zentrum, name_figure )
 %Plot der geclusterten Daten
+%Berechnen der 2D-Projektion der 3D-Ebene
+%
+%INPUT:
+%
+%   cluster1            =   Werte 2. Cluster mit Label
+%   cluster2            =   Werte 1.  mit Label
+%   cluster_zentrum     =   Clusterzentrum, dass dargestellt werden soll
+%   name_figure         =   Titel des Plot Fensters
+%
+%OUTPUT:
+%
+%   []
+%
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
 figure('name', name_figure);
 

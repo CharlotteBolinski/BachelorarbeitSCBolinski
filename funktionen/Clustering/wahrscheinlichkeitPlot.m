@@ -1,6 +1,20 @@
 function [ ] = wahrscheinlichkeitPlot( p, x_name, y_name, titel1, titel2 )
 %Plot der Wahrscheinlichkeiten für jeden Punkt zu einem Cluster zu gehören
 %Betrachtet wird nur das Endresultat
+%
+%INPUT:
+%
+%   p              =   Wahrscheinlichkeiten des Fuzzy C-means
+%   x_name         =   Name der x-Achse , bei einzelner Darstellung
+%   y_name         =   Name der y-Achse, bei einzelner Darstellung
+%   titel1         =   Titel 1. Darstellung, bei einzelner Darstellung 
+%   titel2         =   Titel 2. Darstellung, bei einzelner Darstellung 
+%
+%OUTPUT:
+%
+%   []
+%
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
 size_p = size(p);
 rows_p = size_p(1);

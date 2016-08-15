@@ -1,8 +1,25 @@
-function [ fehler_video, anzahl_fehler ] = unterschiedPlot_video( wahr1, wahr2, clustering1, clustering2, vek1, vek2, cluster_zentrum, fehler_farbe, name_clustering, name_fehler )
-%Erkennen, welche Daten unterschiedlich sind zu Ground Truth
-%wahr: alle Daten mit Cluster Label, wahr
-%Clustering: alle Daten mit Cluster Label, experiment
-%unterschied: gibt Clustering mit Marker für die Werte zurück, die unterschiedlich sind.
+function [ fehler_video, anzahl_fehler ] = unterschiedPlot_video( wahr1, wahr2, clustering1, clustering2, cluster_zentrum, fehler_farbe, name_clustering)
+%Erkennen und darstellen, welche Daten unterschiedlich sind zu Ground Truth
+%Plot der geclusterten Daten
+%Unterschied für das Video Clustering Ergebnis
+%
+%INPUT:
+%
+%   wahr1               =   richtige Werte und Label des 1. Clusters, bekannt aus synthetischen Daten
+%   wahr2               =   richtige Werte und Label des 2. Clusters, bekannt aus synthetischen Daten
+%   clustering1         =   Werte und Label des 1. Clusters
+%   clustering2         =   Werte und Label des 2. Clusters
+%   cluster_zentrum     =   Clusterzentrum, dass dargestellt werden soll
+%   fehler_farbe        =   Farbe als Vektor [R G B], Werte 0-1
+%   name_clustering     =   Titel des Fensters für den Plot, Cluster Darstellung
+%
+%OUTPUT:
+%
+%   fehler_video    =   Werte mit Index, die durch das Clustering nicht erkannt wurden
+%   anzahl_fehler   =   Anzahl der falsch erkannten Werte
+%
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
+
 
 wahr = [wahr1; wahr2];
 clustering = [clustering1(:, 1:4); clustering2(:, 1:4)];

@@ -1,5 +1,23 @@
 function [ cluster1, cluster2, vektoren1, vektoren2, cluster_zentrum, p_fuzzy] = fuzzyCmeans_self( input_daten, vektoren, numCluster )
-    
+%Eigene Implementierung des Fuzzy C-means
+%
+%INPUT:
+%
+%   input_daten         =   projezierte Daten, 2xn Matrix
+%   vektoren            =   Vektoren, 2xn MAtrix
+%   numCluster          =   Anzahl der Cluster, noch nicht implementiert
+%
+%OUTPUT:
+%
+%   cluster1            =   Werte und Label 1. Cluster
+%   cluster2            =   Werte und Label 1. Cluster
+%   vektoren1           =   Vektoren und Label 1. Cluster
+%   vektoren2           =   Vektoren und Label 2. Cluster
+%   cluster_zentrum     =   berechnetes Clusterzentrum am Ende des Algorithmus
+%   p_fuzzy             =   Wahrscheinlichkeiten der Punkte gegenüber der jeweiligen Cluster
+%
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
+
     %Input Daten Größe
     input_size = size(input_daten); %input = column Vektor
     rows = input_size(1);

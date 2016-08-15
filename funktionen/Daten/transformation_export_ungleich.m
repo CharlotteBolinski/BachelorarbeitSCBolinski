@@ -4,6 +4,26 @@ function [ Transform_save, x,y,z ] = transformation_export( input_werte_matrix, 
 %25 Frames pro Sekunde werden angenommen.
 %Ausgangswert wird eine Sekunde für die Transformation. Kann später auch im
 %Funktionskopf übergeben werden um eine individuelle Dauer festzulegen.
+%
+%INPUT:
+%
+%   input_werte_matrix      =   3xn Werte, Startwerte Random verteilt auf der Ebene 
+%   xEbene                  =   Matrix der x-Koordinaten der Ebene
+%   yEbene                  =   Matrix der y-Koordinaten der Ebene
+%   zEbene                  =   Matrix der z-Koordinaten der Ebene
+%   color_array             =   Farbarray der Form [R G B], Werte 0-1
+%   rotation_achse          =   Rotationsachse, 3x1 Matrix
+%   rotation_punkt          =   Rotationspunkt, 3x1 Matrix
+%   translation_punkt       =   Punkt zu dem translatiert werden soll, 3x1 Matrix
+%   CSV_name                =   Name der CSV Datei zum speichern der Werte
+%
+%OUTPUT:
+%
+%   Transform_save      =   Random Daten, Zwischenschritt der Transformation gespeichert
+%   x                   =   Matrix der x-Koordinaten der Ebene, transformiert
+%   y                   =   Matrix der y-Koordinaten der Ebene, transformiert
+%   z                   =   Matrix der z-Koordinaten der Ebene, transformiert
+%
 %Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
 %---------------------------------------------------------------------------

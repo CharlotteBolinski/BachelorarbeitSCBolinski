@@ -1,5 +1,8 @@
 function [ cluster1, cluster2, cluster_zentrum, p_homo, p_abstand] = fuzzyCmeans_homo_abstand( cluster_input, vektoren, clusterZentrum, p_fuzzy, numCluster)
+%Kombination aus Fuzzy C-means und Homographie, Versuch
+%Kombination aus Abstand Optimierung und Homographie Optimierung in einem Algorithmus
 %cluster_input, vektoren_2D,fuzzy_clusterZentrum1frame, p_fuzzy, 2
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
     %projektion_start := label, x_vektoren, y_vektoren
     vektor_daten = [cluster_input(:,1),vektoren]; %Datenwerte der zu clusternden Vektoren

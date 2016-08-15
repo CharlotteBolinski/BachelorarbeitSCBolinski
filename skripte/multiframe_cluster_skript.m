@@ -48,14 +48,14 @@ wahr_index = [wahr, index_wahr'];
 %clusterPlot(cluster1_wahr, cluster2_wahr, fuzzy_clusterZentrum1frame, 'Richtige Daten');
 
 %Optimalfall Wahrscheinlichkeitsverteilung
-
+%{
 p1 = zeros(werte_pro_block,1);
 p2 = ones(werte_pro_block,1);
 
 p1_plot = [p1; p2];
 p2_plot = [p2; p1];
 
-figure('name','AAAAAAA');
+figure();
 plot(p1_plot, 'r');
 hold on
 plot(p2_plot, 'b');
@@ -64,6 +64,7 @@ hold off
 xlabel('Werte sortiert nach Wahrscheinlichkeit');
 ylabel('Wahrscheinlichkeit');
 set(gca,'FontSize',18);
+%}
 
 
 %CLUSTERING%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -84,7 +85,7 @@ cluster_input = [fuzzy_cluster1; fuzzy_cluster2]; %Vorclustering
 vektor_input = [vektoren1; vektoren2];
 
 %Hier die unterschiedlichen Methodennamen und richtigen Parameter eintragen um die unterschiedlichen Ergebnisse zu sehen
-[output_daten_homo, fuzzy_cluster_homo1, fuzzy_cluster_homo2, homographie_fehler_index, homographie_daten, homographie_init_index] = fuzzyCmeans_homo_mad(wahr_index, cluster_input, vektor_input, 2);
+[output_daten_homo, fuzzy_cluster_homo1, fuzzy_cluster_homo2, homographie_fehler_index, homographie_daten, homographie_init_index] = homographie_mad(wahr_index, cluster_input, vektor_input, 2);
 
 %Summe Homographie Fehler
 homographie_fehler_sum = homographie_fehler_sum + homographie_fehler_index(:,1:2);

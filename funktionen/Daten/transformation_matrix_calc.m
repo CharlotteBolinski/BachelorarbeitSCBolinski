@@ -1,6 +1,18 @@
 function [ transformation_matrix ] = transformation_matrix_calc( rotation_winkel,rotation_achse,translation )
 %Matrix für Starrkörpertransformation berechnen um diese Matrix flexibler
 %Einsetzbar zu machen
+%
+%INPUT:
+%
+%   rotation_winkel         =   Winkel um den rotiert werden soll
+%   rotation_achse          =   Rotationsachse, 3x1 Matrix
+%   translation             =   Punkt zu dem translatiert werden soll, 3x1 Matrix
+%
+%OUTPUT:
+%
+%   transformation_matrix   = Matrix, die gewünschte Transformation ausführt
+%
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
 
     %Rotationswinkel in Rad umrechnen
     theta = deg2rad(rotation_winkel);

@@ -1,5 +1,8 @@
 function [ cluster1, cluster2, homo_sort_fehler] = fuzzyCmeans_homo_sort( cluster_input, vektoren, numCluster)
-    
+%Aussortierung nur mit einem Grenzwert für die Homographie
+%Manuell festgelegter Grenzwert/ nicht dynamisch bestimmt
+%Autor: Sophie-Charlotte Bolinski, Matrikelnummer: 545839, htw-berlin
+
     %Input Daten Größe
     input_size = size(cluster_input); %input = column Vektor
     rows = input_size(1);
